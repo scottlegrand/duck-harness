@@ -244,11 +244,37 @@ Server-side verification performed per the driver's checklist:
 3. **Behavior**: even with a clean prompt, unconstrained decoding on this
    stack remains format-unreliable — greedy runs produced markdown blocks,
    invented `default_api:python` hybrids, or the compact `<tool_call>code]`
-   marker; the trajectory flips with ±15 prompt tokens. Model-forward
-   numeric degradation on SM120 remains the leading explanation for the
-   *quality* gap vs vLLM (consistent with the disabled Qwen3.5 FP8
-   accuracy cases in the TRT test waivers); it was not chased to a specific
-   layer here.
+   marker; the trajectory flips with ±15 prompt tokens.
+
+   **Correction (supersedes an earlier claim in this section and in commit
+   `c874308`'s message):** an earlier revision asserted "model-forward
+   numeric degradation on SM120" as the leading explanation. That was NOT
+   demonstrated in this session and should not have been stated as a
+   finding. The record:
+
+   * The "worked under vLLM" baseline (351 valid calls) ran the **base**
+     `Qwen/Qwen3.6-27B-FP8` checkpoint (per this box's shell history),
+     while TRT serves `vrfai/Qwen3.6-27B-FP8` — different weights, so that
+     comparison says nothing about TRT kernels.
+   * The base checkpoint's degenerate output reproduces under **HF
+     transformers as well as TRT-LLM**, implicating the checkpoint/loader
+     combination on this software stack, not GPU kernels.
+   * Format sloppiness with coherent content, and greedy sensitivity to
+     small prompt changes, are equally consistent with the checkpoint
+     simply being weak at format adherence; they are not evidence of a
+     kernel defect.
+   * The waives.txt observation belongs to the remote driver's report and
+     was not verified here.
+
+   What is demonstrated: on THIS serving stack, unconstrained decoding of
+   the vrfai checkpoint does not reliably emit the tool grammar. Whether a
+   reference implementation with the SAME weights and SAME rendered prompt
+   behaves differently is **untested**. The decisive experiment (not run):
+   greedy-decode the captured 3,340-token prompt
+   (`evidence/production-prompt.txt`) with the vrfai checkpoint under a
+   reference implementation (e.g. HF transformers + compressed-tensors)
+   and compare the first divergent token/logits against
+   `evidence/greedy-trtllm.txt`.
 
 **Fix shipped — constrained tool decoding** (engine-guaranteed parseable
 calls; model still authors the code):
