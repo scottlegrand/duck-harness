@@ -30,7 +30,11 @@ LAUNCH=(vllm serve "$MODEL_PATH"
   --enable-auto-tool-choice
   --tool-call-parser qwen3_coder
   --reasoning-parser qwen3)
-[ -z "${VLLM_ALLOW_COMPILE:-}" ] && LAUNCH+=(--enforce-eager)
+# Compiled mode is the default: under the compile caps + scope it brought up
+# cleanly (no cudafe++ storm) and decodes 8-15x faster than eager
+# (median 16 tok/s/seq vs 0.5-4), which is what keeps ARC turns inside the
+# client's 900 s deadline. Set VLLM_FORCE_EAGER=1 for a conservative boot.
+[ -n "${VLLM_FORCE_EAGER:-}" ] && LAUNCH+=(--enforce-eager)
 
 ENVV=(env
   VLLM_ENGINE_READY_TIMEOUT_S=2400
