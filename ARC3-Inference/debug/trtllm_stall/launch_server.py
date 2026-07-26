@@ -55,6 +55,8 @@ def main() -> None:
                       "time": time.time(), "argv": sys.argv}), flush=True)
 
     from tensorrt_llm.llmapi import KvCacheConfig, LLM
+    from tensorrt_llm.llmapi.llm_args import (CapacitySchedulerPolicy,
+                                              SchedulerConfig)
     from tensorrt_llm.serve.openai_server import OpenAIServer
 
     # Reuse the harness's parser-compatibility recovery: this checkpoint's
@@ -178,6 +180,14 @@ def main() -> None:
         # backend the GuidedDecodingParams are silently ignored and the
         # model free-forms malformed pseudo-tool markup on this stack.
         guided_decoding_backend="xgrammar",
+        # 28 concurrent requests, each entitled to the full 65,536-token
+        # window: GUARANTEED_NO_EVICT reserves blocks-to-completion at
+        # admission (2,048 blocks/request), which collapses admission to
+        # floor(pool/2048) = 10 here and starves the rest forever (the
+        # observed stall). MAX_UTILIZATION admits on actual usage and
+        # preempts/resumes under real memory pressure instead.
+        scheduler_config=SchedulerConfig(
+            capacity_scheduler_policy=CapacitySchedulerPolicy.MAX_UTILIZATION),
     )
     server = RecoveringOpenAIServer(
         generator=llm,

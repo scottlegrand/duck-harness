@@ -1,0 +1,63 @@
+--- /home/slegrand/trt/pristine/model_engine.py.orig	2026-07-26 09:14:53.245943732 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py	2026-07-26 09:38:36.242666259 -0700
+@@ -3740,6 +3740,17 @@
+             cumsum = mm_data.get('multimodal_embed_mask_cumsum')
+             py_multimodal_runtime = None
+             if cumsum is not None:
++                if end_compute > cumsum.numel():
++                    # Resumed-after-preemption context: pause() folded
++                    # generated tokens into the prompt, so the context now
++                    # extends past the original prompt the cumsum was built
++                    # for. All multimodal tokens live inside the original
++                    # prompt, so the mm-token count is constant beyond it —
++                    # extend the prefix sum with its final value.
++                    pad = cumsum.new_full((end_compute - cumsum.numel(), ),
++                                          int(cumsum[-1]))
++                    cumsum = torch.cat([cumsum, pad])
++                    mm_data['multimodal_embed_mask_cumsum'] = cumsum
+                 py_multimodal_runtime = MultimodalRuntimeData(
+                     embed_mask_cumsum=cumsum,
+                     past_seen_token_num=past_seen_token_num,
+@@ -3777,9 +3788,39 @@
+                     mrope_config = multimodal_params.multimodal_data[
+                         'mrope_config']
+                     mrope_pos_ids = mrope_config['mrope_position_ids']
+-                    ctx_mrope_position_ids = mrope_pos_ids[:, :, begin_compute:
+-                                                           begin_compute +
+-                                                           len(prompt_tokens)]
++                    need = len(prompt_tokens)
++                    have = max(0, mrope_pos_ids.shape[-1] - begin_compute)
++                    if have < need:
++                        # Resumed-after-preemption context: pause() converted
++                        # generated tokens into prompt tokens, so the prompt
++                        # now extends beyond the stored mrope_position_ids
++                        # (which cover only the original prompt). Tokens past
++                        # the original prompt are text generated pre-pause;
++                        # their 3D rope positions are linear with the
++                        # request's mrope_position_deltas offset — the same
++                        # rule the decode path applies per step.
++                        delta_tensor = mrope_config.get(
++                            'mrope_position_deltas')
++                        delta = (int(delta_tensor.reshape(-1)[0].item())
++                                 if delta_tensor is not None else 0)
++                        start_idx = begin_compute + have
++                        tail = torch.arange(
++                            start_idx + delta,
++                            start_idx + delta + (need - have),
++                            dtype=mrope_pos_ids.dtype,
++                            device=mrope_pos_ids.device).view(1, 1, -1).expand(
++                                3, 1, -1)
++                        ctx_mrope_position_ids = torch.cat([
++                            mrope_pos_ids[:, :,
++                                          begin_compute:begin_compute + have],
++                            tail
++                        ],
++                                                           dim=-1)
++                    else:
++                        ctx_mrope_position_ids = mrope_pos_ids[:, :,
++                                                               begin_compute:
++                                                               begin_compute +
++                                                               need]
+                     # Record as (start_idx, end_idx, (3,1,L) mrope_pos_ids)
+                     mrope_position_ids.append(
+                         (len(position_ids) - len(prompt_tokens),

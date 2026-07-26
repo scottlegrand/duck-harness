@@ -301,6 +301,58 @@ concurrency** with the budget active (5/8–8/8 without it, the leak being
 EOS sampled inside the think block). The readiness smoke now uses the
 production request shape and rejects recovery-shim rescues.
 
+## Full-spec fix: 28× concurrency at the full 65,536-token window, no caps
+
+The implicit max_tokens cap was retired as the stall remedy
+(`TRTLLM_IMPLICIT_MAX_TOKENS_CAP=0`; the patch remains but is inert). The
+admission starvation is instead fixed by switching the capacity scheduler
+to **MAX_UTILIZATION** (`launch_server.py`), which admits on actual KV
+usage and preempts/resumes under real memory pressure instead of
+reserving the full context window per request. Result: all 28 requests
+admit immediately with `max_new_tokens ≈ 56,400` (vs 10/28 under
+GUARANTEED_NO_EVICT).
+
+That change exposed **two more real TRT-LLM 1.3.0rc22 bugs**, each of
+which killed the engine (`EngineDeadError`, GPU deallocated, zombie API)
+the first time a paused **multimodal** request was resumed:
+
+1. `KeyError: 'mrope_position_ids'` (`model_engine.py::_prepare_tp_inputs`)
+   — `_strip_py_multimodal_data_post_prefill` frees the multimodal payload
+   after first prefill, but resume re-runs context prefill, which needs it.
+   Fix: retention gate (`TRTLLM_RETAIN_MM_DATA_FOR_PREEMPTION=1`, patch
+   `0002`) plus delta-extended mrope positions for the resumed prompt
+   (pause folds generated tokens into the prompt, so it now extends past
+   the stored `mrope_position_ids`; the tail is linear with
+   `mrope_position_deltas` — patch `0008`).
+2. `AssertionError: chunk_end_pos > cumsum length`
+   (`MultimodalRuntimeData`) — the mm-token prefix sum covers only the
+   original prompt. Fix: constant-tail extension (all mm tokens live in
+   the original prefix — patch `0008`).
+
+Validation:
+
+* **Targeted multimodal pause/resume stress**: 1,287 resumed-request
+  schedulings with images attached, 0 errors, no freeze; the identical
+  scenario previously killed the engine within one resume.
+* **90-minute full-spec run** (28 rolling slots, ARC multimodal payloads,
+  `max_tokens` omitted → full-window entitlement): **28 completions,
+  0 failures**, completion-token p50 = 56,397 — i.e. requests ran the
+  entire 65,536-token window uncapped and completed; multiple full
+  admit→grow→pause→resume→complete→replace cycles; engine iterating
+  continuously throughout (evidence: `evidence/fullspec-90min-*.jsonl`).
+* Disconnect-abort under this configuration drains 28 active requests to
+  0 within seconds of client teardown.
+
+Physics note: 28 × 65,536 tokens ≈ 1.8M tokens of demand vs 743k tokens
+of KV pool — no scheduler can hold all 28 at maximum length
+simultaneously; MAX_UTILIZATION degrades by pausing/rotating (states
+preserved) rather than by permanently starving admissions, and every
+request finishes.
+
+Deployment for Kaggle: see `debug/trtllm_stall/KAGGLE_WHEEL_BUILD.md` for
+building a patched wheel (`1.3.0rc22+arcfix1`) or the site-packages
+snapshot, with the required runtime configuration.
+
 ## Host stability during launches
 
 Launching on a 16-core / 62 GB / 2 GB-swap workstation OOM-killed desktop

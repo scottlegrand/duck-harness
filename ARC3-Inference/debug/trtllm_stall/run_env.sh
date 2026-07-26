@@ -20,13 +20,21 @@ mkdir -p "$TORCHINDUCTOR_CACHE_DIR" "$TRITON_CACHE_DIR"
 export OMPI_MCA_btl=self,sm,tcp
 export OMPI_MCA_btl_tcp_if_include=lo
 export OMPI_MCA_oob_tcp_if_include=lo
-# Cap the *implicit* max_tokens deduction (client omitted max_tokens) so
-# GUARANTEED_NO_EVICT admission does not reserve the full 65,536-token
-# context per request (which caps concurrency at floor(pool/2048)=10 here,
-# 25 on the Kaggle box). 8192 >> the longest legitimate ARC response
-# observed (2,040 tokens) while allowing 28-way admission with ~12k prompts.
-# User-supplied max_tokens values are never modified.
-export TRTLLM_IMPLICIT_MAX_TOKENS_CAP=8192
+# Full 65,536-token window per request: the implicit max_tokens cap is
+# DISABLED (0 = upstream behavior, omitted max_tokens deduces to
+# max_seq_len - prompt_len). Admission starvation under unbounded requests
+# is instead addressed by the MAX_UTILIZATION capacity scheduler policy in
+# launch_server.py, which admits on actual KV usage and preempts/resumes
+# under pressure instead of reserving the full window per request.
+export TRTLLM_IMPLICIT_MAX_TOKENS_CAP=0
+# MAX_UTILIZATION can pause and resume requests; resume re-runs context
+# prefill, which needs the full multimodal payload (mrope_position_ids +
+# encoder embeddings). Without retention every resume of a multimodal
+# request killed the engine (KeyError 'mrope_position_ids' ->
+# EngineDeadError, observed live at the first resume wave). Cost: pinned
+# encoder outputs stay resident per active multimodal request (~a few MB
+# per ARC grid image).
+export TRTLLM_RETAIN_MM_DATA_FOR_PREEMPTION=1
 # NOTE: the service must run the vrfai snapshot (the Kaggle dataset
 # driessmit1/vrfai-qwen3-6-27b-fp8-hf-snapshot mirrors vrfai/Qwen3.6-27B-FP8,
 # compressed-tensors FP8 W8A8). The base Qwen/Qwen3.6-27B-FP8 checkpoint

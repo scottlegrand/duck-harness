@@ -31,6 +31,12 @@ apply "$HERE/patches/0004-base-worker-implicit-max-tokens-cap.patch" \
       "$SP/tensorrt_llm/executor/base_worker.py"
 apply "$HERE/patches/0005-quant-config-per-tensor-fp8.patch" \
       "$SP/tensorrt_llm/models/quant_config_utils.py"
+apply "$HERE/patches/0006-openai-server-tool-dump-exclude-none.patch" \
+      "$SP/tensorrt_llm/serve/openai_server.py"
+apply "$HERE/patches/0007-qwen3-coder-structural-tags.patch" \
+      "$SP/tensorrt_llm/serve/tool_parser/qwen3_coder_parser.py"
+apply "$HERE/patches/0008-model-engine-mm-resume-fixes.patch" \
+      "$SP/tensorrt_llm/_torch/pyexecutor/model_engine.py"
 
 SP="$SP" "$PY" - <<'EOF'
 import ast, os
@@ -39,7 +45,10 @@ for f in ("tensorrt_llm/_torch/models/modeling_qwen2vl.py",
           "tensorrt_llm/_torch/pyexecutor/py_executor.py",
           "tensorrt_llm/_torch/pyexecutor/stall_diagnostics.py",
           "tensorrt_llm/executor/base_worker.py",
-          "tensorrt_llm/models/quant_config_utils.py"):
+          "tensorrt_llm/models/quant_config_utils.py",
+          "tensorrt_llm/serve/openai_server.py",
+          "tensorrt_llm/serve/tool_parser/qwen3_coder_parser.py",
+          "tensorrt_llm/_torch/pyexecutor/model_engine.py"):
     ast.parse(open(os.path.join(sp, f)).read())
 print("all patched files parse OK")
 EOF

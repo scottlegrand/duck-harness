@@ -1,5 +1,5 @@
 --- /home/slegrand/trt/pristine/py_executor.py.orig	2026-07-25 14:15:16.940528595 -0700
-+++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor.py	2026-07-25 14:50:59.415259249 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor.py	2026-07-26 09:15:14.860589739 -0700
 @@ -1003,6 +1003,12 @@
  
          self.dwdp_manager = dwdp_manager
@@ -31,3 +31,23 @@
                  self.iter_counter += 1
  
      @nvtx_range("_accept_draft_tokens")
+@@ -6305,7 +6315,18 @@
+                 # on `py_multimodal_data`. Without this, encoder inputs and outputs for multi-modal
+                 # requests stay pinned on GPU through the full decode lifetime and can lead to OOMs
+                 # at high concurrency.
+-                _strip_py_multimodal_data_post_prefill(request)
++                #
++                # EXCEPTION (TRTLLM_RETAIN_MM_DATA_FOR_PREEMPTION=1): under the
++                # MAX_UTILIZATION capacity policy a request can be paused and
++                # later resumed via a fresh context prefill, which needs the
++                # full multimodal payload again (mrope_position_ids + encoder
++                # embeddings). Stripping it makes every resume of a multimodal
++                # request die with KeyError('mrope_position_ids') in
++                # _prepare_tp_inputs and takes the whole engine down. Retain
++                # the payload when preemption is possible.
++                if os.environ.get("TRTLLM_RETAIN_MM_DATA_FOR_PREEMPTION",
++                                  "0") != "1":
++                    _strip_py_multimodal_data_post_prefill(request)
+                 if not self.disable_overlap_scheduler and request.will_complete_next_iteration(
+                 ):
+                     request.set_exclude_last_generation_logits(False)
