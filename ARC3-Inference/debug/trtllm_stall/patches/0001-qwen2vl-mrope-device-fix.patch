@@ -1,0 +1,17 @@
+--- /home/slegrand/trt/pristine/modeling_qwen2vl.py.orig	2026-07-25 14:12:05.995458551 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_qwen2vl.py	2026-07-25 14:12:14.598448668 -0700
+@@ -155,6 +155,14 @@
+             raise RuntimeError(
+                 "Missing MRoPE position deltas for seq-slot cache update")
+         deltas = torch.cat(delta_tensors, dim=0)
++        # Media loaders may hand back CPU delta tensors (observed with warmup
++        # dummy multimodal params and non-pinned loader paths); index_copy_
++        # requires the source to match the CUDA cache's device and dtype.
++        if (deltas.device != mrope_position_deltas_cache.device
++                or deltas.dtype != mrope_position_deltas_cache.dtype):
++            deltas = deltas.to(device=mrope_position_deltas_cache.device,
++                               dtype=mrope_position_deltas_cache.dtype,
++                               non_blocking=True)
+         mrope_position_deltas_cache.index_copy_(0, seq_slots, deltas)
+ 
+     if position_ids is not None \

@@ -1,0 +1,129 @@
+== /proc/182542/status
+Name:	python
+Umask:	0002
+State:	S (sleeping)
+Tgid:	182542
+Ngid:	0
+Pid:	182542
+PPid:	182523
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	128
+Groups:	4 24 27 30 46 120 132 133 996 997 1000 
+NStgid:	182542
+NSpid:	182542
+NSpgid:	182542
+NSsid:	182039
+Kthread:	0
+VmPeak:	326702040 kB
+VmSize:	324619204 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	45187296 kB
+VmRSS:	 3954452 kB
+RssAnon:	 2820280 kB
+RssFile:	 1102212 kB
+RssShmem:	   31960 kB
+VmData:	 5227580 kB
+VmStk:	     236 kB
+VmExe:	   24624 kB
+VmLib:	 2743024 kB
+VmPTE:	   11476 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	0
+untag_mask:	0xffffffffffffffff
+Threads:	67
+SigQ:	0/256012
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000000001000
+SigCgt:	0000000141804ee7
+CapInh:	0000000800000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	000001ffffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Seccomp_filters:	0
+Speculation_Store_Bypass:	thread vulnerable
+SpeculationIndirectBranch:	conditional enabled
+Cpus_allowed:	ffff
+Cpus_allowed_list:	0-15
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	35244
+nonvoluntary_ctxt_switches:	1357
+x86_Thread_features:	
+x86_Thread_features_locked:	
+== tid 182542 wchan=do_poll.constprop.0
+== tid 182543 wchan=ep_poll
+== tid 182544 wchan=do_poll.constprop.0
+== tid 182584 wchan=futex_wait_queue
+== tid 182585 wchan=futex_wait_queue
+== tid 182586 wchan=futex_wait_queue
+== tid 182587 wchan=futex_wait_queue
+== tid 182588 wchan=futex_wait_queue
+== tid 182589 wchan=futex_wait_queue
+== tid 182590 wchan=futex_wait_queue
+== tid 182591 wchan=futex_wait_queue
+== tid 182592 wchan=futex_wait_queue
+== tid 182593 wchan=futex_wait_queue
+== tid 182594 wchan=futex_wait_queue
+== tid 182595 wchan=futex_wait_queue
+== tid 182596 wchan=futex_wait_queue
+== tid 182597 wchan=futex_wait_queue
+== tid 182598 wchan=futex_wait_queue
+== tid 182700 wchan=futex_wait_queue
+== tid 182701 wchan=futex_wait_queue
+== tid 182702 wchan=futex_wait_queue
+== tid 182703 wchan=futex_wait_queue
+== tid 182704 wchan=futex_wait_queue
+== tid 182705 wchan=futex_wait_queue
+== tid 182706 wchan=futex_wait_queue
+== tid 182707 wchan=futex_wait_queue
+== tid 182708 wchan=futex_wait_queue
+== tid 182709 wchan=futex_wait_queue
+== tid 182710 wchan=futex_wait_queue
+== tid 182711 wchan=futex_wait_queue
+== tid 182712 wchan=futex_wait_queue
+== tid 182713 wchan=futex_wait_queue
+== tid 182714 wchan=futex_wait_queue
+== tid 182715 wchan=futex_wait_queue
+== tid 182716 wchan=futex_wait_queue
+== tid 182717 wchan=futex_wait_queue
+== tid 182718 wchan=futex_wait_queue
+== tid 182719 wchan=futex_wait_queue
+== tid 182720 wchan=futex_wait_queue
+== tid 182721 wchan=futex_wait_queue
+== tid 182722 wchan=futex_wait_queue
+== tid 182723 wchan=futex_wait_queue
+== tid 182724 wchan=futex_wait_queue
+== tid 182725 wchan=futex_wait_queue
+== tid 182726 wchan=futex_wait_queue
+== tid 182727 wchan=futex_wait_queue
+== tid 182728 wchan=futex_wait_queue
+== tid 182729 wchan=futex_wait_queue
+== tid 182730 wchan=futex_wait_queue
+== tid 182731 wchan=futex_wait_queue
+== tid 182857 wchan=ep_poll
+== tid 182858 wchan=ep_poll
+== tid 182859 wchan=ep_poll
+== tid 182860 wchan=ep_poll
+== tid 182861 wchan=ep_poll
+== tid 182862 wchan=ep_poll
+== tid 182863 wchan=futex_wait_queue
+== tid 182864 wchan=do_poll.constprop.0
+== tid 182865 wchan=do_poll.constprop.0
+== tid 183509 wchan=futex_wait_queue
+== tid 185015 wchan=pipe_read
+== tid 185772 wchan=0
+== tid 185773 wchan=ep_poll
+== tid 185774 wchan=ep_poll
+== tid 185775 wchan=ep_poll
+== tid 185776 wchan=ep_poll
+== tid 185928 wchan=futex_wait_queue

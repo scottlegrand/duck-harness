@@ -1,0 +1,3 @@
+pid, process_name, used_gpu_memory [MiB]
+182054, python, 618 MiB
+182542, /home/slegrand/trt/trtllm-env/bin/python, 92784 MiB

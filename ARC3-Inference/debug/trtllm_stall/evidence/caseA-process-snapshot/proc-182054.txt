@@ -1,0 +1,367 @@
+== /proc/182054/status
+Name:	python
+Umask:	0002
+State:	S (sleeping)
+Tgid:	182054
+Ngid:	0
+Pid:	182054
+PPid:	1
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	256
+Groups:	4 24 27 30 46 120 132 133 996 997 1000 
+NStgid:	182054
+NSpid:	182054
+NSpgid:	182041
+NSsid:	182039
+Kthread:	0
+VmPeak:	32805492 kB
+VmSize:	32800260 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	 2565872 kB
+VmRSS:	 2564032 kB
+RssAnon:	 1664812 kB
+RssFile:	  890956 kB
+RssShmem:	    8264 kB
+VmData:	 5625244 kB
+VmStk:	     140 kB
+VmExe:	   24624 kB
+VmLib:	 2481512 kB
+VmPTE:	    9160 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	0
+untag_mask:	0xffffffffffffffff
+Threads:	305
+SigQ:	0/256012
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000001001004
+SigCgt:	0000000100004ceb
+CapInh:	0000000800000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	000001ffffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Seccomp_filters:	0
+Speculation_Store_Bypass:	thread vulnerable
+SpeculationIndirectBranch:	conditional enabled
+Cpus_allowed:	ffff
+Cpus_allowed_list:	0-15
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	21907
+nonvoluntary_ctxt_switches:	404
+x86_Thread_features:	
+x86_Thread_features_locked:	
+== tid 182054 wchan=ep_poll
+== tid 182208 wchan=ep_poll
+== tid 182209 wchan=do_poll.constprop.0
+== tid 182273 wchan=futex_wait_queue
+== tid 182274 wchan=futex_wait_queue
+== tid 182275 wchan=futex_wait_queue
+== tid 182276 wchan=futex_wait_queue
+== tid 182277 wchan=futex_wait_queue
+== tid 182278 wchan=futex_wait_queue
+== tid 182279 wchan=futex_wait_queue
+== tid 182280 wchan=futex_wait_queue
+== tid 182281 wchan=futex_wait_queue
+== tid 182282 wchan=futex_wait_queue
+== tid 182283 wchan=futex_wait_queue
+== tid 182284 wchan=futex_wait_queue
+== tid 182285 wchan=futex_wait_queue
+== tid 182286 wchan=futex_wait_queue
+== tid 182287 wchan=futex_wait_queue
+== tid 182288 wchan=futex_wait_queue
+== tid 182289 wchan=futex_wait_queue
+== tid 182513 wchan=ep_poll
+== tid 182514 wchan=ep_poll
+== tid 182515 wchan=ep_poll
+== tid 182516 wchan=ep_poll
+== tid 182517 wchan=ep_poll
+== tid 182518 wchan=ep_poll
+== tid 182519 wchan=futex_wait_queue
+== tid 182520 wchan=do_poll.constprop.0
+== tid 182521 wchan=do_poll.constprop.0
+== tid 182522 wchan=hrtimer_nanosleep
+== tid 185777 wchan=ep_poll
+== tid 185778 wchan=ep_poll
+== tid 185779 wchan=ep_poll
+== tid 185780 wchan=futex_wait_queue
+== tid 185781 wchan=futex_wait_queue
+== tid 185899 wchan=futex_wait_queue
+== tid 185900 wchan=futex_wait_queue
+== tid 185901 wchan=futex_wait_queue
+== tid 185902 wchan=futex_wait_queue
+== tid 185903 wchan=futex_wait_queue
+== tid 185904 wchan=futex_wait_queue
+== tid 185905 wchan=futex_wait_queue
+== tid 185906 wchan=futex_wait_queue
+== tid 185907 wchan=futex_wait_queue
+== tid 185908 wchan=futex_wait_queue
+== tid 185909 wchan=futex_wait_queue
+== tid 185910 wchan=futex_wait_queue
+== tid 185911 wchan=futex_wait_queue
+== tid 185912 wchan=futex_wait_queue
+== tid 185913 wchan=futex_wait_queue
+== tid 185914 wchan=futex_wait_queue
+== tid 185915 wchan=futex_wait_queue
+== tid 185916 wchan=futex_wait_queue
+== tid 185917 wchan=futex_wait_queue
+== tid 185918 wchan=futex_wait_queue
+== tid 185919 wchan=futex_wait_queue
+== tid 185920 wchan=futex_wait_queue
+== tid 185921 wchan=futex_wait_queue
+== tid 185922 wchan=futex_wait_queue
+== tid 185923 wchan=futex_wait_queue
+== tid 185924 wchan=futex_wait_queue
+== tid 185926 wchan=futex_wait_queue
+== tid 185927 wchan=do_poll.constprop.0
+== tid 186421 wchan=futex_wait_queue
+== tid 186422 wchan=futex_wait_queue
+== tid 186423 wchan=futex_wait_queue
+== tid 186424 wchan=futex_wait_queue
+== tid 186425 wchan=futex_wait_queue
+== tid 186426 wchan=futex_wait_queue
+== tid 186427 wchan=futex_wait_queue
+== tid 186428 wchan=futex_wait_queue
+== tid 186429 wchan=futex_wait_queue
+== tid 186430 wchan=futex_wait_queue
+== tid 186431 wchan=futex_wait_queue
+== tid 186432 wchan=futex_wait_queue
+== tid 186433 wchan=futex_wait_queue
+== tid 186434 wchan=futex_wait_queue
+== tid 186435 wchan=futex_wait_queue
+== tid 186436 wchan=futex_wait_queue
+== tid 186437 wchan=futex_wait_queue
+== tid 186438 wchan=futex_wait_queue
+== tid 186439 wchan=futex_wait_queue
+== tid 186440 wchan=futex_wait_queue
+== tid 186441 wchan=futex_wait_queue
+== tid 186442 wchan=futex_wait_queue
+== tid 186443 wchan=futex_wait_queue
+== tid 186444 wchan=futex_wait_queue
+== tid 186445 wchan=futex_wait_queue
+== tid 186446 wchan=futex_wait_queue
+== tid 186447 wchan=futex_wait_queue
+== tid 186448 wchan=futex_wait_queue
+== tid 186449 wchan=futex_wait_queue
+== tid 186450 wchan=futex_wait_queue
+== tid 186451 wchan=futex_wait_queue
+== tid 186452 wchan=futex_wait_queue
+== tid 186453 wchan=futex_wait_queue
+== tid 186454 wchan=futex_wait_queue
+== tid 186455 wchan=futex_wait_queue
+== tid 186456 wchan=futex_wait_queue
+== tid 186457 wchan=futex_wait_queue
+== tid 186458 wchan=futex_wait_queue
+== tid 186459 wchan=futex_wait_queue
+== tid 186460 wchan=futex_wait_queue
+== tid 186461 wchan=futex_wait_queue
+== tid 186462 wchan=futex_wait_queue
+== tid 186463 wchan=futex_wait_queue
+== tid 186464 wchan=futex_wait_queue
+== tid 186465 wchan=futex_wait_queue
+== tid 186466 wchan=futex_wait_queue
+== tid 186467 wchan=futex_wait_queue
+== tid 186468 wchan=futex_wait_queue
+== tid 186469 wchan=futex_wait_queue
+== tid 186470 wchan=futex_wait_queue
+== tid 186471 wchan=futex_wait_queue
+== tid 186472 wchan=futex_wait_queue
+== tid 186473 wchan=futex_wait_queue
+== tid 186474 wchan=futex_wait_queue
+== tid 186475 wchan=futex_wait_queue
+== tid 186476 wchan=futex_wait_queue
+== tid 186477 wchan=futex_wait_queue
+== tid 186478 wchan=futex_wait_queue
+== tid 186479 wchan=futex_wait_queue
+== tid 186480 wchan=futex_wait_queue
+== tid 186481 wchan=futex_wait_queue
+== tid 186482 wchan=futex_wait_queue
+== tid 186483 wchan=futex_wait_queue
+== tid 186484 wchan=futex_wait_queue
+== tid 186485 wchan=futex_wait_queue
+== tid 186486 wchan=futex_wait_queue
+== tid 186487 wchan=futex_wait_queue
+== tid 186488 wchan=futex_wait_queue
+== tid 186489 wchan=futex_wait_queue
+== tid 186490 wchan=futex_wait_queue
+== tid 186491 wchan=futex_wait_queue
+== tid 186492 wchan=futex_wait_queue
+== tid 186493 wchan=futex_wait_queue
+== tid 186494 wchan=futex_wait_queue
+== tid 186495 wchan=futex_wait_queue
+== tid 186496 wchan=futex_wait_queue
+== tid 186497 wchan=futex_wait_queue
+== tid 186498 wchan=futex_wait_queue
+== tid 186499 wchan=futex_wait_queue
+== tid 186500 wchan=futex_wait_queue
+== tid 186501 wchan=futex_wait_queue
+== tid 186502 wchan=futex_wait_queue
+== tid 186503 wchan=futex_wait_queue
+== tid 186504 wchan=futex_wait_queue
+== tid 186505 wchan=futex_wait_queue
+== tid 186506 wchan=futex_wait_queue
+== tid 186507 wchan=futex_wait_queue
+== tid 186508 wchan=futex_wait_queue
+== tid 186509 wchan=futex_wait_queue
+== tid 186510 wchan=futex_wait_queue
+== tid 186511 wchan=futex_wait_queue
+== tid 186512 wchan=futex_wait_queue
+== tid 186513 wchan=futex_wait_queue
+== tid 186514 wchan=futex_wait_queue
+== tid 186515 wchan=futex_wait_queue
+== tid 186516 wchan=futex_wait_queue
+== tid 186517 wchan=futex_wait_queue
+== tid 186518 wchan=futex_wait_queue
+== tid 186519 wchan=futex_wait_queue
+== tid 186520 wchan=futex_wait_queue
+== tid 186521 wchan=futex_wait_queue
+== tid 186522 wchan=futex_wait_queue
+== tid 186523 wchan=futex_wait_queue
+== tid 186524 wchan=futex_wait_queue
+== tid 186525 wchan=futex_wait_queue
+== tid 186526 wchan=futex_wait_queue
+== tid 186527 wchan=futex_wait_queue
+== tid 186528 wchan=futex_wait_queue
+== tid 186529 wchan=futex_wait_queue
+== tid 186530 wchan=futex_wait_queue
+== tid 186531 wchan=futex_wait_queue
+== tid 186532 wchan=futex_wait_queue
+== tid 186533 wchan=futex_wait_queue
+== tid 186534 wchan=futex_wait_queue
+== tid 186535 wchan=futex_wait_queue
+== tid 186536 wchan=futex_wait_queue
+== tid 186537 wchan=futex_wait_queue
+== tid 186538 wchan=futex_wait_queue
+== tid 186539 wchan=futex_wait_queue
+== tid 186540 wchan=futex_wait_queue
+== tid 186541 wchan=futex_wait_queue
+== tid 186542 wchan=futex_wait_queue
+== tid 186543 wchan=futex_wait_queue
+== tid 186544 wchan=futex_wait_queue
+== tid 186545 wchan=futex_wait_queue
+== tid 186546 wchan=futex_wait_queue
+== tid 186547 wchan=futex_wait_queue
+== tid 186548 wchan=futex_wait_queue
+== tid 186549 wchan=futex_wait_queue
+== tid 186550 wchan=futex_wait_queue
+== tid 186551 wchan=futex_wait_queue
+== tid 186552 wchan=futex_wait_queue
+== tid 186553 wchan=futex_wait_queue
+== tid 186554 wchan=futex_wait_queue
+== tid 186555 wchan=futex_wait_queue
+== tid 186556 wchan=futex_wait_queue
+== tid 186557 wchan=futex_wait_queue
+== tid 186558 wchan=futex_wait_queue
+== tid 186559 wchan=futex_wait_queue
+== tid 186560 wchan=futex_wait_queue
+== tid 186561 wchan=futex_wait_queue
+== tid 186562 wchan=futex_wait_queue
+== tid 186563 wchan=futex_wait_queue
+== tid 186564 wchan=futex_wait_queue
+== tid 186565 wchan=futex_wait_queue
+== tid 186566 wchan=futex_wait_queue
+== tid 186567 wchan=futex_wait_queue
+== tid 186568 wchan=futex_wait_queue
+== tid 186569 wchan=futex_wait_queue
+== tid 186570 wchan=futex_wait_queue
+== tid 186571 wchan=futex_wait_queue
+== tid 186572 wchan=futex_wait_queue
+== tid 186573 wchan=futex_wait_queue
+== tid 186574 wchan=futex_wait_queue
+== tid 186575 wchan=futex_wait_queue
+== tid 186576 wchan=futex_wait_queue
+== tid 186577 wchan=futex_wait_queue
+== tid 186578 wchan=futex_wait_queue
+== tid 186579 wchan=futex_wait_queue
+== tid 186580 wchan=futex_wait_queue
+== tid 186581 wchan=futex_wait_queue
+== tid 186582 wchan=futex_wait_queue
+== tid 186583 wchan=futex_wait_queue
+== tid 186584 wchan=futex_wait_queue
+== tid 186585 wchan=futex_wait_queue
+== tid 186586 wchan=futex_wait_queue
+== tid 186587 wchan=futex_wait_queue
+== tid 186588 wchan=futex_wait_queue
+== tid 186589 wchan=futex_wait_queue
+== tid 186590 wchan=futex_wait_queue
+== tid 186591 wchan=futex_wait_queue
+== tid 186592 wchan=futex_wait_queue
+== tid 186593 wchan=futex_wait_queue
+== tid 186594 wchan=futex_wait_queue
+== tid 186595 wchan=futex_wait_queue
+== tid 186596 wchan=futex_wait_queue
+== tid 186597 wchan=futex_wait_queue
+== tid 186598 wchan=futex_wait_queue
+== tid 186599 wchan=futex_wait_queue
+== tid 186600 wchan=futex_wait_queue
+== tid 186601 wchan=futex_wait_queue
+== tid 186602 wchan=futex_wait_queue
+== tid 186603 wchan=futex_wait_queue
+== tid 186604 wchan=futex_wait_queue
+== tid 186605 wchan=futex_wait_queue
+== tid 186606 wchan=futex_wait_queue
+== tid 186607 wchan=futex_wait_queue
+== tid 186608 wchan=futex_wait_queue
+== tid 186609 wchan=futex_wait_queue
+== tid 186610 wchan=futex_wait_queue
+== tid 186611 wchan=futex_wait_queue
+== tid 186612 wchan=futex_wait_queue
+== tid 186613 wchan=futex_wait_queue
+== tid 186614 wchan=futex_wait_queue
+== tid 186615 wchan=futex_wait_queue
+== tid 186616 wchan=futex_wait_queue
+== tid 186617 wchan=futex_wait_queue
+== tid 186618 wchan=futex_wait_queue
+== tid 186619 wchan=futex_wait_queue
+== tid 186620 wchan=futex_wait_queue
+== tid 186621 wchan=futex_wait_queue
+== tid 186622 wchan=futex_wait_queue
+== tid 186623 wchan=futex_wait_queue
+== tid 186624 wchan=futex_wait_queue
+== tid 186625 wchan=futex_wait_queue
+== tid 186626 wchan=futex_wait_queue
+== tid 186627 wchan=futex_wait_queue
+== tid 186628 wchan=futex_wait_queue
+== tid 186629 wchan=futex_wait_queue
+== tid 186630 wchan=futex_wait_queue
+== tid 186631 wchan=futex_wait_queue
+== tid 186632 wchan=futex_wait_queue
+== tid 186633 wchan=futex_wait_queue
+== tid 186634 wchan=futex_wait_queue
+== tid 186635 wchan=futex_wait_queue
+== tid 186636 wchan=futex_wait_queue
+== tid 186637 wchan=futex_wait_queue
+== tid 186638 wchan=futex_wait_queue
+== tid 186639 wchan=futex_wait_queue
+== tid 186640 wchan=futex_wait_queue
+== tid 186641 wchan=futex_wait_queue
+== tid 186642 wchan=futex_wait_queue
+== tid 186643 wchan=futex_wait_queue
+== tid 186644 wchan=futex_wait_queue
+== tid 186645 wchan=futex_wait_queue
+== tid 186646 wchan=futex_wait_queue
+== tid 186647 wchan=futex_wait_queue
+== tid 186648 wchan=futex_wait_queue
+== tid 186649 wchan=futex_wait_queue
+== tid 186650 wchan=futex_wait_queue
+== tid 186651 wchan=futex_wait_queue
+== tid 186652 wchan=futex_wait_queue
+== tid 186653 wchan=futex_wait_queue
+== tid 186654 wchan=futex_wait_queue
+== tid 186655 wchan=futex_wait_queue
+== tid 186656 wchan=futex_wait_queue
+== tid 186657 wchan=futex_wait_queue
+== tid 186658 wchan=futex_wait_queue
+== tid 186659 wchan=futex_wait_queue
+== tid 186660 wchan=futex_wait_queue
+== tid 186661 wchan=futex_wait_queue
+== tid 186662 wchan=futex_wait_queue

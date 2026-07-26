@@ -1,0 +1,25 @@
+Sat Jul 25 16:08:33 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 595.45.04              Driver Version: 595.45.04      CUDA Version: 13.2     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX PRO 6000 Blac...    Off |   00000000:01:00.0  On |                  Off |
+| 53%   83C    P1            264W /  600W |   93796MiB /  97887MiB |    100%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            7638      G   /usr/lib/xorg/Xorg                      351MiB |
+|    0   N/A  N/A           10708      G   .../8664/usr/lib/firefox/firefox          9MiB |
+|    0   N/A  N/A          182054      C   python                                  618MiB |
+|    0   N/A  N/A          182542      C   ...and/trt/trtllm-env/bin/python      92784MiB |
++-----------------------------------------------------------------------------------------+
+timestamp, utilization.gpu [%], utilization.memory [%], memory.used [MiB], memory.total [MiB], power.draw [W], temperature.gpu, pstate, clocks.current.sm [MHz], clocks.current.memory [MHz]
+2026/07/25 16:08:33.398, 100 %, 91 %, 93796 MiB, 97887 MiB, 320.97 W, 83, P1, 2730 MHz, 13365 MHz

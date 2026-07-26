@@ -1,0 +1,795 @@
+[New LWP 185928]
+[New LWP 185776]
+[New LWP 185775]
+[New LWP 185774]
+[New LWP 185773]
+[New LWP 185772]
+[New LWP 185015]
+[New LWP 183509]
+[New LWP 182865]
+[New LWP 182864]
+[New LWP 182863]
+[New LWP 182862]
+[New LWP 182861]
+[New LWP 182860]
+[New LWP 182859]
+[New LWP 182858]
+[New LWP 182857]
+[New LWP 182731]
+[New LWP 182730]
+[New LWP 182729]
+[New LWP 182728]
+[New LWP 182727]
+[New LWP 182726]
+[New LWP 182725]
+[New LWP 182724]
+[New LWP 182723]
+[New LWP 182722]
+[New LWP 182721]
+[New LWP 182720]
+[New LWP 182719]
+[New LWP 182718]
+[New LWP 182717]
+[New LWP 182716]
+[New LWP 182715]
+[New LWP 182714]
+[New LWP 182713]
+[New LWP 182712]
+[New LWP 182711]
+[New LWP 182710]
+[New LWP 182709]
+[New LWP 182708]
+[New LWP 182707]
+[New LWP 182706]
+[New LWP 182705]
+[New LWP 182704]
+[New LWP 182703]
+[New LWP 182702]
+[New LWP 182701]
+[New LWP 182700]
+[New LWP 182598]
+[New LWP 182597]
+[New LWP 182596]
+[New LWP 182595]
+[New LWP 182594]
+[New LWP 182593]
+[New LWP 182592]
+[New LWP 182591]
+[New LWP 182590]
+[New LWP 182589]
+[New LWP 182588]
+[New LWP 182587]
+[New LWP 182586]
+[New LWP 182585]
+[New LWP 182584]
+[New LWP 182544]
+[New LWP 182543]
+
+warning: Loadable section ".dynstr" outside of ELF segments
+  in /home/slegrand/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/bin/python3.12
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+0x000073ebdef1b4fd in __GI___poll (fds=0x7ffc9d156df8, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+
+warning: 29	../sysdeps/unix/sysv/linux/poll.c: No such file or directory
+
+Thread 67 (Thread 0x73ebdae626c0 (LWP 182543) "python"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=8, events=0x2c97a440, maxevents=32, timeout=2100000) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073ebddd402b5 in epoll_dispatch () from /home/slegrand/trt/openmpi-rt/lib/libevent_core-2.1.so.7
+#2  0x000073ebddd350a9 in event_base_loop () from /home/slegrand/trt/openmpi-rt/lib/libevent_core-2.1.so.7
+#3  0x000073ebddabaf2a in progress_engine () from /home/slegrand/trt/openmpi-rt/lib/libpmix.so.2
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 66 (Thread 0x73ebd93ff6c0 (LWP 182544) "cuda00004000011"):
+#0  0x000073ebdef1b4fd in __GI___poll (fds=0x2ca409a0, nfds=3, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x000073ebceb01417 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x000073ebcebdcb85 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x000073ebceaebf13 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 65 (Thread 0x73ebd896b6c0 (LWP 182584) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=-769761876, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2960 <thread_status+96>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=-769761876, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2960 <thread_status+96>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2960 <thread_status+96>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2910 <thread_status+16>, cond=0x73e90e9d2938 <thread_status+56>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2938 <thread_status+56>, mutex=0x73e90e9d2910 <thread_status+16>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 64 (Thread 0x73e8ec9ff6c0 (LWP 182585) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d29e0 <thread_status+224>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d29e0 <thread_status+224>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d29e0 <thread_status+224>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2990 <thread_status+144>, cond=0x73e90e9d29b8 <thread_status+184>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d29b8 <thread_status+184>, mutex=0x73e90e9d2990 <thread_status+144>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 63 (Thread 0x73e8ec1fe6c0 (LWP 182586) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2a60 <thread_status+352>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2a60 <thread_status+352>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2a60 <thread_status+352>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2a10 <thread_status+272>, cond=0x73e90e9d2a38 <thread_status+312>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2a38 <thread_status+312>, mutex=0x73e90e9d2a10 <thread_status+272>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 62 (Thread 0x73e8eb9fd6c0 (LWP 182587) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2ae0 <thread_status+480>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2ae0 <thread_status+480>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2ae0 <thread_status+480>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2a90 <thread_status+400>, cond=0x73e90e9d2ab8 <thread_status+440>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2ab8 <thread_status+440>, mutex=0x73e90e9d2a90 <thread_status+400>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 61 (Thread 0x73e8eb1fc6c0 (LWP 182588) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2b60 <thread_status+608>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2b60 <thread_status+608>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2b60 <thread_status+608>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2b10 <thread_status+528>, cond=0x73e90e9d2b38 <thread_status+568>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2b38 <thread_status+568>, mutex=0x73e90e9d2b10 <thread_status+528>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 60 (Thread 0x73e8ea9fb6c0 (LWP 182589) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2be0 <thread_status+736>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2be0 <thread_status+736>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2be0 <thread_status+736>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2b90 <thread_status+656>, cond=0x73e90e9d2bb8 <thread_status+696>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2bb8 <thread_status+696>, mutex=0x73e90e9d2b90 <thread_status+656>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 59 (Thread 0x73e8ea1fa6c0 (LWP 182590) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2c60 <thread_status+864>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2c60 <thread_status+864>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2c60 <thread_status+864>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2c10 <thread_status+784>, cond=0x73e90e9d2c38 <thread_status+824>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2c38 <thread_status+824>, mutex=0x73e90e9d2c10 <thread_status+784>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 58 (Thread 0x73e8e99f96c0 (LWP 182591) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2ce0 <thread_status+992>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2ce0 <thread_status+992>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2ce0 <thread_status+992>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2c90 <thread_status+912>, cond=0x73e90e9d2cb8 <thread_status+952>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2cb8 <thread_status+952>, mutex=0x73e90e9d2c90 <thread_status+912>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 57 (Thread 0x73e8e91f86c0 (LWP 182592) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2d60 <thread_status+1120>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2d60 <thread_status+1120>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2d60 <thread_status+1120>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2d10 <thread_status+1040>, cond=0x73e90e9d2d38 <thread_status+1080>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2d38 <thread_status+1080>, mutex=0x73e90e9d2d10 <thread_status+1040>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 56 (Thread 0x73e8e89f76c0 (LWP 182593) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2de0 <thread_status+1248>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2de0 <thread_status+1248>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2de0 <thread_status+1248>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2d90 <thread_status+1168>, cond=0x73e90e9d2db8 <thread_status+1208>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2db8 <thread_status+1208>, mutex=0x73e90e9d2d90 <thread_status+1168>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 55 (Thread 0x73e8e81f66c0 (LWP 182594) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2e60 <thread_status+1376>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2e60 <thread_status+1376>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2e60 <thread_status+1376>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2e10 <thread_status+1296>, cond=0x73e90e9d2e38 <thread_status+1336>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2e38 <thread_status+1336>, mutex=0x73e90e9d2e10 <thread_status+1296>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 54 (Thread 0x73e8e79f56c0 (LWP 182595) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2ee0 <thread_status+1504>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2ee0 <thread_status+1504>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2ee0 <thread_status+1504>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2e90 <thread_status+1424>, cond=0x73e90e9d2eb8 <thread_status+1464>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2eb8 <thread_status+1464>, mutex=0x73e90e9d2e90 <thread_status+1424>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 53 (Thread 0x73e8e71f46c0 (LWP 182596) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2f60 <thread_status+1632>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2f60 <thread_status+1632>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2f60 <thread_status+1632>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2f10 <thread_status+1552>, cond=0x73e90e9d2f38 <thread_status+1592>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2f38 <thread_status+1592>, mutex=0x73e90e9d2f10 <thread_status+1552>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 52 (Thread 0x73e8e69f36c0 (LWP 182597) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d2fe0 <thread_status+1760>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d2fe0 <thread_status+1760>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d2fe0 <thread_status+1760>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d2f90 <thread_status+1680>, cond=0x73e90e9d2fb8 <thread_status+1720>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d2fb8 <thread_status+1720>, mutex=0x73e90e9d2f90 <thread_status+1680>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 51 (Thread 0x73e8e61f26c0 (LWP 182598) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e90e9d3060 <thread_status+1888>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e90e9d3060 <thread_status+1888>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e90e9d3060 <thread_status+1888>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e90e9d3010 <thread_status+1808>, cond=0x73e90e9d3038 <thread_status+1848>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e90e9d3038 <thread_status+1848>, mutex=0x73e90e9d3010 <thread_status+1808>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e90d83581b in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/numpy/_core/../../numpy.libs/libscipy_openblas64_-fdde5778.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 50 (Thread 0x73e8193ff6c0 (LWP 182700) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b07e0 <thread_status+96>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b07e0 <thread_status+96>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b07e0 <thread_status+96>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0790 <thread_status+16>, cond=0x73e83b3b07b8 <thread_status+56>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b07b8 <thread_status+56>, mutex=0x73e83b3b0790 <thread_status+16>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 49 (Thread 0x73e818bfe6c0 (LWP 182701) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0860 <thread_status+224>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0860 <thread_status+224>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0860 <thread_status+224>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0810 <thread_status+144>, cond=0x73e83b3b0838 <thread_status+184>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0838 <thread_status+184>, mutex=0x73e83b3b0810 <thread_status+144>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 48 (Thread 0x73e8183fd6c0 (LWP 182702) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b08e0 <thread_status+352>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b08e0 <thread_status+352>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b08e0 <thread_status+352>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0890 <thread_status+272>, cond=0x73e83b3b08b8 <thread_status+312>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b08b8 <thread_status+312>, mutex=0x73e83b3b0890 <thread_status+272>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 47 (Thread 0x73e817bfc6c0 (LWP 182703) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0960 <thread_status+480>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0960 <thread_status+480>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0960 <thread_status+480>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0910 <thread_status+400>, cond=0x73e83b3b0938 <thread_status+440>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0938 <thread_status+440>, mutex=0x73e83b3b0910 <thread_status+400>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 46 (Thread 0x73e8173fb6c0 (LWP 182704) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b09e0 <thread_status+608>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b09e0 <thread_status+608>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b09e0 <thread_status+608>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0990 <thread_status+528>, cond=0x73e83b3b09b8 <thread_status+568>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b09b8 <thread_status+568>, mutex=0x73e83b3b0990 <thread_status+528>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 45 (Thread 0x73e816bfa6c0 (LWP 182705) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0a60 <thread_status+736>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0a60 <thread_status+736>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0a60 <thread_status+736>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0a10 <thread_status+656>, cond=0x73e83b3b0a38 <thread_status+696>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0a38 <thread_status+696>, mutex=0x73e83b3b0a10 <thread_status+656>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 44 (Thread 0x73e8163f96c0 (LWP 182706) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0ae0 <thread_status+864>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0ae0 <thread_status+864>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0ae0 <thread_status+864>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0a90 <thread_status+784>, cond=0x73e83b3b0ab8 <thread_status+824>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0ab8 <thread_status+824>, mutex=0x73e83b3b0a90 <thread_status+784>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 43 (Thread 0x73e815bf86c0 (LWP 182707) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0b60 <thread_status+992>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0b60 <thread_status+992>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0b60 <thread_status+992>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0b10 <thread_status+912>, cond=0x73e83b3b0b38 <thread_status+952>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0b38 <thread_status+952>, mutex=0x73e83b3b0b10 <thread_status+912>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 42 (Thread 0x73e8153f76c0 (LWP 182708) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0be0 <thread_status+1120>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0be0 <thread_status+1120>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0be0 <thread_status+1120>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0b90 <thread_status+1040>, cond=0x73e83b3b0bb8 <thread_status+1080>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0bb8 <thread_status+1080>, mutex=0x73e83b3b0b90 <thread_status+1040>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 41 (Thread 0x73e814bf66c0 (LWP 182709) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0c60 <thread_status+1248>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0c60 <thread_status+1248>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0c60 <thread_status+1248>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0c10 <thread_status+1168>, cond=0x73e83b3b0c38 <thread_status+1208>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0c38 <thread_status+1208>, mutex=0x73e83b3b0c10 <thread_status+1168>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 40 (Thread 0x73e8143f56c0 (LWP 182710) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0ce0 <thread_status+1376>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0ce0 <thread_status+1376>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0ce0 <thread_status+1376>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0c90 <thread_status+1296>, cond=0x73e83b3b0cb8 <thread_status+1336>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0cb8 <thread_status+1336>, mutex=0x73e83b3b0c90 <thread_status+1296>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 39 (Thread 0x73e813bf46c0 (LWP 182711) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0d60 <thread_status+1504>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0d60 <thread_status+1504>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0d60 <thread_status+1504>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0d10 <thread_status+1424>, cond=0x73e83b3b0d38 <thread_status+1464>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0d38 <thread_status+1464>, mutex=0x73e83b3b0d10 <thread_status+1424>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 38 (Thread 0x73e8133f36c0 (LWP 182712) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0de0 <thread_status+1632>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0de0 <thread_status+1632>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0de0 <thread_status+1632>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0d90 <thread_status+1552>, cond=0x73e83b3b0db8 <thread_status+1592>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0db8 <thread_status+1592>, mutex=0x73e83b3b0d90 <thread_status+1552>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 37 (Thread 0x73e812bf26c0 (LWP 182713) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0e60 <thread_status+1760>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0e60 <thread_status+1760>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0e60 <thread_status+1760>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0e10 <thread_status+1680>, cond=0x73e83b3b0e38 <thread_status+1720>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0e38 <thread_status+1720>, mutex=0x73e83b3b0e10 <thread_status+1680>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 36 (Thread 0x73e8123f16c0 (LWP 182714) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e83b3b0ee0 <thread_status+1888>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e83b3b0ee0 <thread_status+1888>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e83b3b0ee0 <thread_status+1888>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e83b3b0e90 <thread_status+1808>, cond=0x73e83b3b0eb8 <thread_status+1848>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e83b3b0eb8 <thread_status+1848>, mutex=0x73e83b3b0e90 <thread_status+1808>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e83a3e69df in blas_thread_server () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/scipy/linalg/../../scipy.libs/libscipy_openblas-5f890258.so
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 35 (Thread 0x73e808dff6c0 (LWP 182715) "jemalloc_bg_thd"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e809416630) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e809416630) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e809416630, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e809416678, cond=0x73e809416608) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e809416608, mutex=0x73e809416678) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80ac88142 in background_thread_entry () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/pyarrow/libarrow.so.2500
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 34 (Thread 0x73e8076516c0 (LWP 182716) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 33 (Thread 0x73e806e506c0 (LWP 182717) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 32 (Thread 0x73e80664f6c0 (LWP 182718) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 31 (Thread 0x73e805e4e6c0 (LWP 182719) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 30 (Thread 0x73e80564d6c0 (LWP 182720) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 29 (Thread 0x73e804e4c6c0 (LWP 182721) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 28 (Thread 0x73e80464b6c0 (LWP 182722) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 27 (Thread 0x73e803e4a6c0 (LWP 182723) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 26 (Thread 0x73e8036496c0 (LWP 182724) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 25 (Thread 0x73e802e486c0 (LWP 182725) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 24 (Thread 0x73e8026476c0 (LWP 182726) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 23 (Thread 0x73e801e466c0 (LWP 182727) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 22 (Thread 0x73e8016456c0 (LWP 182728) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 21 (Thread 0x73e800e446c0 (LWP 182729) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 20 (Thread 0x73e8006436c0 (LWP 182730) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 19 (Thread 0x73e7ffe426c0 (LWP 182731) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x73e807787d18 <gs+184>) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73e807787d18 <gs+184>, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9b7ed in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x73e807787cc8 <gs+104>, cond=0x73e807787cf0 <gs+144>) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x73e807787cf0 <gs+144>, mutex=0x73e807787cc8 <gs+104>) at ./nptl/pthread_cond_wait.c:627
+#5  0x000073e80777da0f in th_worker (tidptr=<optimized out>) at numexpr/module.cpp:64
+#6  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 18 (Thread 0x73e7d9eff6c0 (LWP 182857) "ZMQbg/Reaper"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=43, events=0x73e7d9efe1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 17 (Thread 0x73e7d96fe6c0 (LWP 182858) "ZMQbg/IO/0"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=45, events=0x73e7d96fd1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 16 (Thread 0x73e7d8efd6c0 (LWP 182859) "ZMQbg/Reaper"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=49, events=0x73e7d8efc1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 15 (Thread 0x73e7d86fc6c0 (LWP 182860) "ZMQbg/IO/0"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=51, events=0x73e7d86fb1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 14 (Thread 0x73e7d7efb6c0 (LWP 182861) "ZMQbg/Reaper"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=55, events=0x73e7d7efa1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 13 (Thread 0x73e7d76fa6c0 (LWP 182862) "ZMQbg/IO/0"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=57, events=0x73e7d76f91c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 12 (Thread 0x73e7d6ef96c0 (LWP 182863) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x73e7d6ef8e40, op=393, expected=0, futex_word=0x2ca6f218) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x73e7d6ef8e40, clockid=0, expected=0, futex_word=0x2ca6f218) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x2ca6f218, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x73e7d6ef8e40, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x000073ebdee9bc8e in __pthread_cond_wait_common (abstime=0x73e7d6ef8e40, clockid=0, mutex=0x2ca69480, cond=0x2ca6f1f0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_timedwait64 (cond=0x2ca6f1f0, mutex=0x2ca69480, abstime=0x73e7d6ef8e40) at ./nptl/pthread_cond_wait.c:652
+#5  0x000073ebcea4756e in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#6  0x000073ebceaebf13 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#7  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#8  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 11 (Thread 0x73e7d66f86c0 (LWP 182864) "cuda-EvtHandlr"):
+#0  0x000073ebdef1b4fd in __GI___poll (fds=0x73e7d0000c20, nfds=10, timeout=100) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x000073ebceb01417 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x000073ebcebdcb85 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x000073ebceaebf13 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 10 (Thread 0x73e7d4ad66c0 (LWP 182865) "python"):
+#0  0x000073ebdef1b4fd in __GI___poll (fds=0x401d9ad0, nfds=2, timeout=100) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x000073ebceb01417 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x000073ebcebdcb85 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x000073ebceaebf13 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 9 (Thread 0x73e7a92ff6c0 (LWP 183509) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=<optimized out>, cancel=true, abstime=0x73e7a92feab8, op=393, expected=0, futex_word=0x73de9c000ba0) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=<optimized out>, abstime=0x73e7a92feab8, clockid=0, expected=0, futex_word=0x73de9c000ba0) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x73de9c000ba0, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x73e7a92feab8, private=<optimized out>) at ./nptl/futex-internal.c:139
+#3  0x000073ebdeea4cf0 in do_futex_wait (sem=sem@entry=0x73de9c000ba0, abstime=abstime@entry=0x73e7a92feab8, clockid=0) at ./nptl/sem_waitcommon.c:111
+#4  0x000073ebdeea4d93 in __new_sem_wait_slow64 (sem=0x73de9c000ba0, abstime=0x73e7a92feab8, clockid=0) at ./nptl/sem_waitcommon.c:183
+#5  0x000000000185d8a3 in PyThread_acquire_lock_timed.warm ()
+#6  0x00000000016c94dc in acquire_timed ()
+#7  0x00000000016c91bf in lock_PyThread_acquire_lock ()
+#8  0x0000000001654074 in method_vectorcall_VARARGS_KEYWORDS.llvm.4423039280050994690 ()
+#9  0x0000000001612d62 in _PyEval_EvalFrameDefault ()
+#10 0x00000000016107ad in method_vectorcall.llvm ()
+#11 0x00000000017b8125 in thread_run ()
+#12 0x00000000017b8061 in pythread_wrapper.llvm ()
+#13 0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#14 0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 8 (Thread 0x73de69ffb6c0 (LWP 185015) "python"):
+#0  0x000073ebdef1baca in __GI___libc_read (nbytes=4096, buf=0x9ba73290, fd=83) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __GI___libc_read (fd=83, buf=0x9ba73290, nbytes=4096) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00000000016cd7b1 in _Py_read ()
+#3  0x00000000016ce570 in _io_FileIO_readinto ()
+#4  0x0000000001653f5a in method_vectorcall_FASTCALL_KEYWORDS_METHOD.llvm.4423039280050994690 ()
+#5  0x0000000001653b94 in _PyObject_VectorcallTstate.llvm.18397689215175225355 ()
+#6  0x0000000001716e02 in _bufferedreader_raw_read ()
+#7  0x00000000017168d4 in _io__Buffered_read ()
+#8  0x0000000001615b8b in _PyEval_EvalFrameDefault ()
+#9  0x00000000016107ad in method_vectorcall.llvm ()
+#10 0x00000000016201e2 in _PyEval_EvalFrameDefault ()
+#11 0x0000000001612d62 in _PyEval_EvalFrameDefault ()
+#12 0x0000000001612d62 in _PyEval_EvalFrameDefault ()
+#13 0x00000000016107ad in method_vectorcall.llvm ()
+#14 0x00000000017b8125 in thread_run ()
+#15 0x00000000017b8061 in pythread_wrapper.llvm ()
+#16 0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#17 0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 7 (Thread 0x73e7a01fc6c0 (LWP 185772) "python"):
+#0  0x000073ebce9b5331 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#1  0x000073ebceb805d7 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x000073ebceb6556b in cuLaunchKernel () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x000073ebccc1376d in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/../../nvidia/cu13/lib/libcudart.so.13
+#4  0x000073ebccc74643 in cudaLaunchKernel () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/../../nvidia/cu13/lib/libcudart.so.13
+#5  0x000073e91118106f in void at::native::gpu_kernel_impl<__nv_hdl_wrapper_t<false, true, false, __nv_dl_tag<void (*)(at::TensorIteratorBase&), &at::native::direct_copy_kernel_cuda, 13u>, long (long)> >(at::TensorIteratorBase&, __nv_hdl_wrapper_t<false, true, false, __nv_dl_tag<void (*)(at::TensorIteratorBase&), &at::native::direct_copy_kernel_cuda, 13u>, long (long)> const&) [clone .isra.0] () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so
+#6  0x000073e9111ab49d in at::native::copy_device_to_device(at::TensorIterator&, bool, bool) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so
+#7  0x000073e92964baad in at::native::copy_impl(at::Tensor&, at::Tensor const&, bool) [clone .isra.0] () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#8  0x000073e92964df57 in at::native::copy_(at::Tensor&, at::Tensor const&, bool) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#9  0x000073e92e18a63c in c10::impl::wrap_kernel_functor_unboxed_<c10::impl::detail::WrapFunctionIntoFunctor_<c10::CompileTimeFunctionPointer<at::Tensor& (c10::DispatchKeySet, at::Tensor&, at::Tensor const&, bool), &torch::ADInplaceOrView::copy_>, at::Tensor&, c10::guts::typelist::typelist<c10::DispatchKeySet, at::Tensor&, at::Tensor const&, bool> >, at::Tensor& (c10::DispatchKeySet, at::Tensor&, at::Tensor const&, bool)>::call(c10::OperatorKernel*, c10::DispatchKeySet, at::Tensor&, at::Tensor const&, bool) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#10 0x000073e92a4c068a in at::_ops::copy_::call(at::Tensor&, at::Tensor const&, bool) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#11 0x000073e9299e74d2 in at::native::_to_copy(at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#12 0x000073e92a9bca4c in c10::impl::wrap_kernel_functor_unboxed_<c10::impl::detail::WrapFunctionIntoFunctor_<c10::CompileTimeFunctionPointer<at::Tensor (at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>), &at::(anonymous namespace)::(anonymous namespace)::wrapper_CompositeExplicitAutograd___to_copy>, at::Tensor, c10::guts::typelist::typelist<at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat> > >, at::Tensor (at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>)>::call(c10::OperatorKernel*, c10::DispatchKeySet, at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#13 0x000073e929f949a2 in at::_ops::_to_copy::redispatch(c10::DispatchKeySet, at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#14 0x000073e92a71661b in c10::impl::wrap_kernel_functor_unboxed_<c10::impl::detail::WrapFunctionIntoFunctor_<c10::CompileTimeFunctionPointer<at::Tensor (at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>), &at::(anonymous namespace)::_to_copy>, at::Tensor, c10::guts::typelist::typelist<at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat> > >, at::Tensor (at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>)>::call(c10::OperatorKernel*, c10::DispatchKeySet, at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#15 0x000073e929ffcdf0 in at::_ops::_to_copy::call(at::Tensor const&, std::optional<c10::ScalarType>, std::optional<c10::Layout>, std::optional<c10::Device>, std::optional<bool>, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#16 0x000073e9299cfe94 in at::native::to(at::Tensor const&, c10::ScalarType, bool, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#17 0x000073e92ab0868f in c10::impl::wrap_kernel_functor_unboxed_<c10::impl::detail::WrapFunctionIntoFunctor_<c10::CompileTimeFunctionPointer<at::Tensor (at::Tensor const&, c10::ScalarType, bool, bool, std::optional<c10::MemoryFormat>), &at::(anonymous namespace)::(anonymous namespace)::wrapper_CompositeImplicitAutograd_dtype_to>, at::Tensor, c10::guts::typelist::typelist<at::Tensor const&, c10::ScalarType, bool, bool, std::optional<c10::MemoryFormat> > >, at::Tensor (at::Tensor const&, c10::ScalarType, bool, bool, std::optional<c10::MemoryFormat>)>::call(c10::OperatorKernel*, c10::DispatchKeySet, at::Tensor const&, c10::ScalarType, bool, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#18 0x000073e92a1c0b15 in at::_ops::to_dtype::call(at::Tensor const&, c10::ScalarType, bool, bool, std::optional<c10::MemoryFormat>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#19 0x000073e9299b31d8 in at::native::make_info(at::Tensor, c10::IListRef<at::OptionalTensorRef>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#20 0x000073e9299ae453 in at::meta::structured_index_Tensor::meta(at::Tensor const&, c10::IListRef<at::OptionalTensorRef>) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#21 0x000073e9132123e0 in at::(anonymous namespace)::wrapper_CUDA_index_Tensor(at::Tensor const&, c10::List<std::optional<at::Tensor> > const&) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so
+#22 0x000073e91321259f in c10::impl::wrap_kernel_functor_unboxed_<c10::impl::detail::WrapFunctionIntoFunctor_<c10::CompileTimeFunctionPointer<at::Tensor (at::Tensor const&, c10::List<std::optional<at::Tensor> > const&), &at::(anonymous namespace)::wrapper_CUDA_index_Tensor>, at::Tensor, c10::guts::typelist::typelist<at::Tensor const&, c10::List<std::optional<at::Tensor> > const&> >, at::Tensor (at::Tensor const&, c10::List<std::optional<at::Tensor> > const&)>::call(c10::OperatorKernel*, c10::DispatchKeySet, at::Tensor const&, c10::List<std::optional<at::Tensor> > const&) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so
+#23 0x000073e92a1e31db in at::_ops::index_Tensor::call(at::Tensor const&, c10::List<std::optional<at::Tensor> > const&) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so
+#24 0x000073e9c0a7fc1a in at::indexing::dispatch_index(at::Tensor const&, std::vector<at::Tensor, std::allocator<at::Tensor> >&&) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_python.so
+#25 0x000073e9c0a7cb5e in torch::autograd::THPVariable_getitem(_object*, _object*) () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/lib/libtorch_python.so
+#26 0x000000000161c52a in _PyEval_EvalFrameDefault ()
+#27 0x00000000016107ad in method_vectorcall.llvm ()
+#28 0x00000000016201e2 in _PyEval_EvalFrameDefault ()
+#29 0x00000000016107ad in method_vectorcall.llvm ()
+#30 0x00000000017b8125 in thread_run ()
+#31 0x00000000017b8061 in pythread_wrapper.llvm ()
+#32 0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#33 0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 6 (Thread 0x73de6b7fe6c0 (LWP 185773) "ZMQbg/Reaper"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=92, events=0x73de6b7fd1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 5 (Thread 0x73e7a11ff6c0 (LWP 185774) "ZMQbg/IO/0"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=94, events=0x73e7a11fe1c0, maxevents=256, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000073e7f8898365 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f88b9439 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88e2b88 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 4 (Thread 0x73e79f9fb6c0 (LWP 185775) "python"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=97, events=0x73e7a1989070, maxevents=2, timeout=499) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000000000050f9c8 in select_epoll_poll_impl ()
+#2  0x000000000050f6d4 in select_epoll_poll ()
+#3  0x000000000161587f in _PyEval_EvalFrameDefault ()
+#4  0x00000000016107ad in method_vectorcall.llvm ()
+#5  0x00000000017b8125 in thread_run ()
+#6  0x00000000017b8061 in pythread_wrapper.llvm ()
+#7  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#8  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 3 (Thread 0x73e79d45a6c0 (LWP 185776) "python"):
+#0  0x000073ebdef2a072 in epoll_wait (epfd=87, events=0x73e7a1fc3b50, maxevents=1, timeout=300000) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x000000000050f9c8 in select_epoll_poll_impl ()
+#2  0x000000000050f6d4 in select_epoll_poll ()
+#3  0x000000000161587f in _PyEval_EvalFrameDefault ()
+#4  0x00000000016107ad in method_vectorcall.llvm ()
+#5  0x00000000017b8125 in thread_run ()
+#6  0x00000000017b8061 in pythread_wrapper.llvm ()
+#7  0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#8  0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 2 (Thread 0x73e798a3e6c0 (LWP 185928) "python"):
+#0  0x000073ebdee98d71 in __futex_abstimed_wait_common64 (private=<optimized out>, cancel=true, abstime=0x73e798a3d4c8, op=393, expected=0, futex_word=0x445185e0) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=<optimized out>, abstime=0x73e798a3d4c8, clockid=0, expected=0, futex_word=0x445185e0) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x445185e0, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x73e798a3d4c8, private=<optimized out>) at ./nptl/futex-internal.c:139
+#3  0x000073ebdeea4cf0 in do_futex_wait (sem=sem@entry=0x445185e0, abstime=abstime@entry=0x73e798a3d4c8, clockid=0) at ./nptl/sem_waitcommon.c:111
+#4  0x000073ebdeea4d93 in __new_sem_wait_slow64 (sem=0x445185e0, abstime=0x73e798a3d4c8, clockid=0) at ./nptl/sem_waitcommon.c:183
+#5  0x000000000185d8a3 in PyThread_acquire_lock_timed.warm ()
+#6  0x00000000016c94dc in acquire_timed ()
+#7  0x00000000016c91bf in lock_PyThread_acquire_lock ()
+#8  0x0000000001654074 in method_vectorcall_VARARGS_KEYWORDS.llvm.4423039280050994690 ()
+#9  0x0000000001612d62 in _PyEval_EvalFrameDefault ()
+#10 0x000000000168739a in _PyObject_Call_Prepend ()
+#11 0x00000000016872d9 in slot_tp_call ()
+#12 0x0000000001612bc6 in _PyEval_EvalFrameDefault ()
+#13 0x00000000016107ad in method_vectorcall.llvm ()
+#14 0x00000000016201e2 in _PyEval_EvalFrameDefault ()
+#15 0x00000000016107ad in method_vectorcall.llvm ()
+#16 0x00000000017b8125 in thread_run ()
+#17 0x00000000017b8061 in pythread_wrapper.llvm ()
+#18 0x000073ebdee9caa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#19 0x000073ebdef29c6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 1 (Thread 0x73ebdf188740 (LWP 182542) "python"):
+#0  0x000073ebdef1b4fd in __GI___poll (fds=0x7ffc9d156df8, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x000073e7f88caeb7 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#2  0x000073e7f889facf in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#3  0x000073e7f88d0b0f in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#4  0x000073e7f88d0626 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#5  0x000073e7f88f84d2 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#6  0x000073e7f88f8d11 in zmq_msg_recv () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/../../../pyzmq.libs/libzmq-7b073b3d.so.5.2.5
+#7  0x000073e7f896cb53 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/_zmq.abi3.so
+#8  0x000073e7f8961d80 in ?? () from /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/zmq/backend/cython/_zmq.abi3.so
+#9  0x0000000001612d62 in _PyEval_EvalFrameDefault ()
+#10 0x0000000001685de2 in PyEval_EvalCode ()
+#11 0x000000000167efc8 in builtin_exec ()
+#12 0x0000000001604967 in cfunction_vectorcall_FASTCALL_KEYWORDS.llvm.1389210256044623945 ()
+#13 0x0000000001612d62 in _PyEval_EvalFrameDefault ()
+#14 0x00000000017c1f5f in pymain_run_module ()
+#15 0x00000000017c1960 in Py_RunMain ()
+#16 0x00000000017b9dba in pymain_main.llvm ()
+#17 0x00000000017b9bad in main ()
+[Inferior 1 (process 182542) detached]

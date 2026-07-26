@@ -1,0 +1,23 @@
+--- /home/slegrand/trt/pristine/quant_config_utils.py.orig	2026-07-25 15:44:08.491336945 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/models/quant_config_utils.py	2026-07-25 15:44:12.957268854 -0700
+@@ -58,10 +58,19 @@
+                 raise ValueError(f"Unsupported group_size: {group_size}. Supported: 128.")
+             quant_config.group_size = group_size
+ 
++        elif weights_quant_strategy == "tensor":
++            # llm-compressor FP8 W8A8 with per-tensor weight scales and static
++            # per-tensor activation scales (e.g. vrfai/Qwen3.6-27B-FP8).
++            # This is the classic modelopt-style FP8 recipe: checkpoints carry
++            # `weight_scale` / `input_scale` per Linear, which the PyTorch
++            # backend's FP8 QDQ linear method already consumes.
++            if inputs_quant_strategy != "tensor":
++                raise ValueError(f"Unsupported inputs_quant_strategy: {inputs_quant_strategy}.")
++            quant_config.quant_algo = QuantAlgo.FP8
+         else:
+             raise ValueError(
+                 f"Unsupported weights_quant_strategy: {weights_quant_strategy}. "
+-                "Supported strategies: 'channel', 'block'."
++                "Supported strategies: 'tensor', 'channel', 'block'."
+             )
+     elif (
+         weights_quant_config["num_bits"] == 4

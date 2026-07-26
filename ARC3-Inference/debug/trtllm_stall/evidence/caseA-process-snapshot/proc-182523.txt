@@ -1,0 +1,81 @@
+== /proc/182523/status
+Name:	prte
+Umask:	0002
+State:	S (sleeping)
+Tgid:	182523
+Ngid:	0
+Pid:	182523
+PPid:	182054
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	128
+Groups:	4 24 27 30 46 120 132 133 996 997 1000 
+NStgid:	182523
+NSpid:	182523
+NSpgid:	182041
+NSsid:	182039
+Kthread:	0
+VmPeak:	  393852 kB
+VmSize:	  328316 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	   12220 kB
+VmRSS:	   12220 kB
+RssAnon:	    2876 kB
+RssFile:	    9344 kB
+RssShmem:	       0 kB
+VmData:	  150052 kB
+VmStk:	     136 kB
+VmExe:	      20 kB
+VmLib:	    8860 kB
+VmPTE:	     176 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	0
+untag_mask:	0xffffffffffffffff
+Threads:	19
+SigQ:	0/256012
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000000000004
+SigCgt:	0000000167cb7a33
+CapInh:	0000000800000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	000001ffffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Seccomp_filters:	0
+Speculation_Store_Bypass:	thread vulnerable
+SpeculationIndirectBranch:	conditional enabled
+Cpus_allowed:	ffff
+Cpus_allowed_list:	0-15
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	225
+nonvoluntary_ctxt_switches:	16
+x86_Thread_features:	
+x86_Thread_features_locked:	
+== tid 182523 wchan=ep_poll
+== tid 182524 wchan=ep_poll
+== tid 182525 wchan=do_select
+== tid 182526 wchan=ep_poll
+== tid 182527 wchan=ep_poll
+== tid 182528 wchan=ep_poll
+== tid 182529 wchan=ep_poll
+== tid 182530 wchan=ep_poll
+== tid 182531 wchan=ep_poll
+== tid 182532 wchan=ep_poll
+== tid 182533 wchan=ep_poll
+== tid 182534 wchan=ep_poll
+== tid 182535 wchan=ep_poll
+== tid 182536 wchan=ep_poll
+== tid 182537 wchan=ep_poll
+== tid 182538 wchan=ep_poll
+== tid 182539 wchan=ep_poll
+== tid 182540 wchan=ep_poll
+== tid 182541 wchan=ep_poll

@@ -1,0 +1,396 @@
+== process tree
+python,182054 /home/slegrand/trt/duck-harness/ARC3-Inference/debug/trtllm_stall/launch_server.py --model-path /home/slegrand/.cache/huggingface/hub/models--vrfai--Qwen3.6-27B-FP8/snapshots/70462b01826175b3f45fa80065184167ddc973fb --served-model-name vrfai/Qwen3.6-27B-FP8 --host 0.0.0.0 --port 8000 --diag-file /home/slegrand/trt/logs/trtllm-diag-20260725-155958.jsonl
+  |-prte,182523 --prtemca schizo prte --no-ready-msg --report-uri 81 --singleton singleton.laila.182054.0 --keepalive 82
+  |   |-python,182542 -R -m mpi4py.futures.server
+  |   |   |-python,185014 /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/torch/_inductor/compile_worker/__main__.py --pickler=torch._inductor.compile_worker.subproc_pool.SubprocPickler --kind=fork --workers=16 --parent=182542 --read-fd=81 --write-fd=84 --torch-key=NubfEjenZrynrUqFcsgGmGHjQT7e7KRfEnrVWxHzIQg=
+  |   |   |   |-{python},185089
+  |   |   |   `-{python},185126
+  |   |   |-{python},182543
+  |   |   |-{python},182544
+  |   |   |-{python},182584
+  |   |   |-{python},182585
+  |   |   |-{python},182586
+  |   |   |-{python},182587
+  |   |   |-{python},182588
+  |   |   |-{python},182589
+  |   |   |-{python},182590
+  |   |   |-{python},182591
+  |   |   |-{python},182592
+  |   |   |-{python},182593
+  |   |   |-{python},182594
+  |   |   |-{python},182595
+  |   |   |-{python},182596
+  |   |   |-{python},182597
+  |   |   |-{python},182598
+  |   |   |-{python},182700
+  |   |   |-{python},182701
+  |   |   |-{python},182702
+  |   |   |-{python},182703
+  |   |   |-{python},182704
+  |   |   |-{python},182705
+  |   |   |-{python},182706
+  |   |   |-{python},182707
+  |   |   |-{python},182708
+  |   |   |-{python},182709
+  |   |   |-{python},182710
+  |   |   |-{python},182711
+  |   |   |-{python},182712
+  |   |   |-{python},182713
+  |   |   |-{python},182714
+  |   |   |-{python},182715
+  |   |   |-{python},182716
+  |   |   |-{python},182717
+  |   |   |-{python},182718
+  |   |   |-{python},182719
+  |   |   |-{python},182720
+  |   |   |-{python},182721
+  |   |   |-{python},182722
+  |   |   |-{python},182723
+  |   |   |-{python},182724
+  |   |   |-{python},182725
+  |   |   |-{python},182726
+  |   |   |-{python},182727
+  |   |   |-{python},182728
+  |   |   |-{python},182729
+  |   |   |-{python},182730
+  |   |   |-{python},182731
+  |   |   |-{python},182857
+  |   |   |-{python},182858
+  |   |   |-{python},182859
+  |   |   |-{python},182860
+  |   |   |-{python},182861
+  |   |   |-{python},182862
+  |   |   |-{python},182863
+  |   |   |-{python},182864
+  |   |   |-{python},182865
+  |   |   |-{python},183509
+  |   |   |-{python},185015
+  |   |   |-{python},185772
+  |   |   |-{python},185773
+  |   |   |-{python},185774
+  |   |   |-{python},185775
+  |   |   |-{python},185776
+  |   |   `-{python},185928
+  |   |-{prte},182524
+  |   |-{prte},182525
+  |   |-{prte},182526
+  |   |-{prte},182527
+  |   |-{prte},182528
+  |   |-{prte},182529
+  |   |-{prte},182530
+  |   |-{prte},182531
+  |   |-{prte},182532
+  |   |-{prte},182533
+  |   |-{prte},182534
+  |   |-{prte},182535
+  |   |-{prte},182536
+  |   |-{prte},182537
+  |   |-{prte},182538
+  |   |-{prte},182539
+  |   |-{prte},182540
+  |   `-{prte},182541
+  |-torch_shm_manag,185925
+  |-{python},182208
+  |-{python},182209
+  |-{python},182273
+  |-{python},182274
+  |-{python},182275
+  |-{python},182276
+  |-{python},182277
+  |-{python},182278
+  |-{python},182279
+  |-{python},182280
+  |-{python},182281
+  |-{python},182282
+  |-{python},182283
+  |-{python},182284
+  |-{python},182285
+  |-{python},182286
+  |-{python},182287
+  |-{python},182288
+  |-{python},182289
+  |-{python},182513
+  |-{python},182514
+  |-{python},182515
+  |-{python},182516
+  |-{python},182517
+  |-{python},182518
+  |-{python},182519
+  |-{python},182520
+  |-{python},182521
+  |-{python},182522
+  |-{python},185777
+  |-{python},185778
+  |-{python},185779
+  |-{python},185780
+  |-{python},185781
+  |-{python},185899
+  |-{python},185900
+  |-{python},185901
+  |-{python},185902
+  |-{python},185903
+  |-{python},185904
+  |-{python},185905
+  |-{python},185906
+  |-{python},185907
+  |-{python},185908
+  |-{python},185909
+  |-{python},185910
+  |-{python},185911
+  |-{python},185912
+  |-{python},185913
+  |-{python},185914
+  |-{python},185915
+  |-{python},185916
+  |-{python},185917
+  |-{python},185918
+  |-{python},185919
+  |-{python},185920
+  |-{python},185921
+  |-{python},185922
+  |-{python},185923
+  |-{python},185924
+  |-{python},185926
+  |-{python},185927
+  |-{python},186421
+  |-{python},186422
+  |-{python},186423
+  |-{python},186424
+  |-{python},186425
+  |-{python},186426
+  |-{python},186427
+  |-{python},186428
+  |-{python},186429
+  |-{python},186430
+  |-{python},186431
+  |-{python},186432
+  |-{python},186433
+  |-{python},186434
+  |-{python},186435
+  |-{python},186436
+  |-{python},186437
+  |-{python},186438
+  |-{python},186439
+  |-{python},186440
+  |-{python},186441
+  |-{python},186442
+  |-{python},186443
+  |-{python},186444
+  |-{python},186445
+  |-{python},186446
+  |-{python},186447
+  |-{python},186448
+  |-{python},186449
+  |-{python},186450
+  |-{python},186451
+  |-{python},186452
+  |-{python},186453
+  |-{python},186454
+  |-{python},186455
+  |-{python},186456
+  |-{python},186457
+  |-{python},186458
+  |-{python},186459
+  |-{python},186460
+  |-{python},186461
+  |-{python},186462
+  |-{python},186463
+  |-{python},186464
+  |-{python},186465
+  |-{python},186466
+  |-{python},186467
+  |-{python},186468
+  |-{python},186469
+  |-{python},186470
+  |-{python},186471
+  |-{python},186472
+  |-{python},186473
+  |-{python},186474
+  |-{python},186475
+  |-{python},186476
+  |-{python},186477
+  |-{python},186478
+  |-{python},186479
+  |-{python},186480
+  |-{python},186481
+  |-{python},186482
+  |-{python},186483
+  |-{python},186484
+  |-{python},186485
+  |-{python},186486
+  |-{python},186487
+  |-{python},186488
+  |-{python},186489
+  |-{python},186490
+  |-{python},186491
+  |-{python},186492
+  |-{python},186493
+  |-{python},186494
+  |-{python},186495
+  |-{python},186496
+  |-{python},186497
+  |-{python},186498
+  |-{python},186499
+  |-{python},186500
+  |-{python},186501
+  |-{python},186502
+  |-{python},186503
+  |-{python},186504
+  |-{python},186505
+  |-{python},186506
+  |-{python},186507
+  |-{python},186508
+  |-{python},186509
+  |-{python},186510
+  |-{python},186511
+  |-{python},186512
+  |-{python},186513
+  |-{python},186514
+  |-{python},186515
+  |-{python},186516
+  |-{python},186517
+  |-{python},186518
+  |-{python},186519
+  |-{python},186520
+  |-{python},186521
+  |-{python},186522
+  |-{python},186523
+  |-{python},186524
+  |-{python},186525
+  |-{python},186526
+  |-{python},186527
+  |-{python},186528
+  |-{python},186529
+  |-{python},186530
+  |-{python},186531
+  |-{python},186532
+  |-{python},186533
+  |-{python},186534
+  |-{python},186535
+  |-{python},186536
+  |-{python},186537
+  |-{python},186538
+  |-{python},186539
+  |-{python},186540
+  |-{python},186541
+  |-{python},186542
+  |-{python},186543
+  |-{python},186544
+  |-{python},186545
+  |-{python},186546
+  |-{python},186547
+  |-{python},186548
+  |-{python},186549
+  |-{python},186550
+  |-{python},186551
+  |-{python},186552
+  |-{python},186553
+  |-{python},186554
+  |-{python},186555
+  |-{python},186556
+  |-{python},186557
+  |-{python},186558
+  |-{python},186559
+  |-{python},186560
+  |-{python},186561
+  |-{python},186562
+  |-{python},186563
+  |-{python},186564
+  |-{python},186565
+  |-{python},186566
+  |-{python},186567
+  |-{python},186568
+  |-{python},186569
+  |-{python},186570
+  |-{python},186571
+  |-{python},186572
+  |-{python},186573
+  |-{python},186574
+  |-{python},186575
+  |-{python},186576
+  |-{python},186577
+  |-{python},186578
+  |-{python},186579
+  |-{python},186580
+  |-{python},186581
+  |-{python},186582
+  |-{python},186583
+  |-{python},186584
+  |-{python},186585
+  |-{python},186586
+  |-{python},186587
+  |-{python},186588
+  |-{python},186589
+  |-{python},186590
+  |-{python},186591
+  |-{python},186592
+  |-{python},186593
+  |-{python},186594
+  |-{python},186595
+  |-{python},186596
+  |-{python},186597
+  |-{python},186598
+  |-{python},186599
+  |-{python},186600
+  |-{python},186601
+  |-{python},186602
+  |-{python},186603
+  |-{python},186604
+  |-{python},186605
+  |-{python},186606
+  |-{python},186607
+  |-{python},186608
+  |-{python},186609
+  |-{python},186610
+  |-{python},186611
+  |-{python},186612
+  |-{python},186613
+  |-{python},186614
+  |-{python},186615
+  |-{python},186616
+  |-{python},186617
+  |-{python},186618
+  |-{python},186619
+  |-{python},186620
+  |-{python},186621
+  |-{python},186622
+  |-{python},186623
+  |-{python},186624
+  |-{python},186625
+  |-{python},186626
+  |-{python},186627
+  |-{python},186628
+  |-{python},186629
+  |-{python},186630
+  |-{python},186631
+  |-{python},186632
+  |-{python},186633
+  |-{python},186634
+  |-{python},186635
+  |-{python},186636
+  |-{python},186637
+  |-{python},186638
+  |-{python},186639
+  |-{python},186640
+  |-{python},186641
+  |-{python},186642
+  |-{python},186643
+  |-{python},186644
+  |-{python},186645
+  |-{python},186646
+  |-{python},186647
+  |-{python},186648
+  |-{python},186649
+  |-{python},186650
+  |-{python},186651
+  |-{python},186652
+  |-{python},186653
+  |-{python},186654
+  |-{python},186655
+  |-{python},186656
+  |-{python},186657
+  |-{python},186658
+  |-{python},186659
+  |-{python},186660
+  |-{python},186661
+  `-{python},186662

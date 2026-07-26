@@ -1,0 +1,34 @@
+--- /home/slegrand/trt/pristine/base_worker.py.orig	2026-07-25 16:07:02.365766875 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/executor/base_worker.py	2026-07-25 16:07:29.193452296 -0700
+@@ -16,6 +16,7 @@
+ import enum
+ import gc
+ import json
++import os
+ import time
+ import traceback
+ import uuid
+@@ -455,6 +456,23 @@
+ 
+             # default_max_tokens is the biggest available value
+             if max_tokens is None:
++                # An omitted max_tokens historically deduced to the absolute
++                # ceiling (max_seq_len - prompt_len). Under the
++                # GUARANTEED_NO_EVICT capacity scheduler every admitted
++                # request then reserves blocks for the FULL context window
++                # (max_seq_len/tokens_per_block blocks), so concurrency
++                # collapses to floor(pool_blocks / blocks_per_seq) regardless
++                # of max_batch_size, and admitted no-EOS generations hold
++                # their slots for hours. Cap only the *implicit* deduction —
++                # never a user-provided value — so unbounded-by-omission
++                # requests stay schedulable and finite. Runaway generations
++                # finish with finish_reason="length" instead of monopolizing
++                # a slot. Override with TRTLLM_IMPLICIT_MAX_TOKENS_CAP
++                # (0 disables the cap and restores old behavior).
++                implicit_cap = int(
++                    os.environ.get("TRTLLM_IMPLICIT_MAX_TOKENS_CAP", "16384"))
++                if implicit_cap > 0:
++                    return min(default_max_tokens, implicit_cap)
+                 return default_max_tokens
+             elif max_tokens > default_max_tokens and default_max_tokens > 0:
+                 logger.warning(

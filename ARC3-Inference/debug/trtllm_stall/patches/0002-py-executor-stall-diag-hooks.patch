@@ -1,0 +1,33 @@
+--- /home/slegrand/trt/pristine/py_executor.py.orig	2026-07-25 14:15:16.940528595 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor.py	2026-07-25 14:50:59.415259249 -0700
+@@ -1003,6 +1003,12 @@
+ 
+         self.dwdp_manager = dwdp_manager
+ 
++        # Optional per-iteration forward-progress diagnostics
++        # (enabled via TRTLLM_STALL_DIAG=<path>).
++        from tensorrt_llm._torch.pyexecutor.stall_diagnostics import \
++            maybe_create_stall_diagnostics
++        self._stall_diag = maybe_create_stall_diagnostics(self)
++
+         if start_worker:
+             self.start_worker()
+ 
+@@ -4177,6 +4183,8 @@
+                 # TLLM_METRICS_ALL_RANKS=0.
+                 self._flush_iter_stats_synced()
+ 
++                if self._stall_diag is not None:
++                    self._stall_diag.on_iteration(scheduled_batch, iter_stats)
+                 self.iter_counter += 1
+ 
+     def _prepare_draft_requests(self):
+@@ -4702,6 +4710,8 @@
+ 
+                 self._kv_connector_terminate_requests()
+ 
++                if self._stall_diag is not None:
++                    self._stall_diag.on_iteration(scheduled_batch, iter_stats)
+                 self.iter_counter += 1
+ 
+     @nvtx_range("_accept_draft_tokens")
