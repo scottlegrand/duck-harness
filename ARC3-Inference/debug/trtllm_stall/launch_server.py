@@ -80,12 +80,20 @@ def main() -> None:
     # about emitting the `<tool_call>` trigger on its own (prompt-sensitive
     # at greedy), and every ARC production turn must act through the python
     # tool. Thinking remains unconstrained.
+    import contextvars
+
     import tensorrt_llm.serve.openai_server as _oas
     _orig_strict_builder = _oas._build_tool_strict_guided_decoding_params
+    _thinking_enabled: contextvars.ContextVar = contextvars.ContextVar(
+        "arc_thinking_enabled", default=True)
 
     def _strict_builder_with_think_trigger(tools, tool_parser_name):
         params = _orig_strict_builder(tools, tool_parser_name)
         if params is None or not getattr(params, "structural_tag", None):
+            return params
+        if not _thinking_enabled.get():
+            # Thinking disabled: no `</think>` will ever be generated, so
+            # keep the parser's native `<tool_call>` trigger untouched.
             return params
         try:
             spec = json.loads(params.structural_tag)
@@ -104,9 +112,16 @@ def main() -> None:
                     })
             if not think_tags:
                 return params
-            fmt["tags"] = list(fmt.get("tags", [])) + think_tags
-            fmt["triggers"] = sorted(set(fmt.get("triggers", []))
-                                     | {"</think>"})
+            # Thinking mode: `</think>` is the ONLY trigger. Keeping the
+            # native `<tool_call>` trigger alongside it caused live 400s:
+            # the model writes `<tool_call>` INSIDE its reasoning, arming
+            # the grammar mid-think; when the thinking budget then forces
+            # `</think>`, the grammar (mid-JSON) forbids it, every logit is
+            # masked, the sampler emits token 0 ('!'), and the xgrammar
+            # matcher rejects the request ("failed to accept last new
+            # token: 0" -> HTTP 400).
+            fmt["tags"] = think_tags
+            fmt["triggers"] = ["</think>"]
             spec["format"] = fmt
             params.structural_tag = json.dumps(spec)
         except Exception as exc:  # noqa: BLE001 - fall back to base grammar
@@ -140,7 +155,9 @@ def main() -> None:
                 # model occasionally samples EOS inside the think block and
                 # the turn ends with no tool call (~2/8 observed at temp 0.6).
                 kwargs = request.chat_template_kwargs or {}
-                if (kwargs.get("enable_thinking", True)
+                thinking_on = bool(kwargs.get("enable_thinking", True))
+                _thinking_enabled.set(thinking_on)
+                if (thinking_on
                         and request.thinking_token_budget is None):
                     budget = int(os.environ.get(
                         "TRTLLM_DEFAULT_THINKING_BUDGET", "1200"))
