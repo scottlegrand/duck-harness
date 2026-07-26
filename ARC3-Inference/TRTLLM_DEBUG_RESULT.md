@@ -220,6 +220,72 @@ diagnostic evidence are committed together on
 `codex/trtllm-stall-diagnostics`; the commit hash is reported in the
 session summary accompanying this branch.
 
+## Follow-up: malformed pseudo-tool XML on the production prompt
+
+Driver report: the exact production prompt returned malformed pseudo-tool
+markup instead of a parsed python call (thinking enabled; PNG removal did
+not help; same prompt worked under vLLM).
+
+Server-side verification performed per the driver's checklist:
+
+1. **Template file**: local `chat_template.jinja` is byte-identical to the
+   official `vrfai/Qwen3.6-27B-FP8` file (7,764 bytes; the tool-calling
+   support is the `tools` branch inside that single template — there is no
+   separate template file in the repo). With tools present, TRT-LLM's
+   `resolve_hf_chat_template` uses the tokenizer's template and passes
+   `tools=` through.
+2. **Rendered prompt / token IDs**: one real divergence found and fixed —
+   `openai_server.py` serialized tools via `tool.model_dump()`, which
+   injects pydantic defaults (`"strict": null`) into the prompt's tool
+   JSON: +5 tokens vs the transformers/vLLM rendering, right inside the
+   tool-definition block (patch `0006`, `exclude_none=True`). After the
+   fix the live server render is token-identical (3,340) to the offline
+   `apply_chat_template(tools=...)` reference.
+3. **Behavior**: even with a clean prompt, unconstrained decoding on this
+   stack remains format-unreliable — greedy runs produced markdown blocks,
+   invented `default_api:python` hybrids, or the compact `<tool_call>code]`
+   marker; the trajectory flips with ±15 prompt tokens. Model-forward
+   numeric degradation on SM120 remains the leading explanation for the
+   *quality* gap vs vLLM (consistent with the disabled Qwen3.5 FP8
+   accuracy cases in the TRT test waivers); it was not chased to a specific
+   layer here.
+
+**Fix shipped — constrained tool decoding** (engine-guaranteed parseable
+calls; model still authors the code):
+
+* `guided_decoding_backend="xgrammar"` on the engine (launch_server.py).
+* `qwen3_coder` tool parser gains structural-tag support (patch `0007`):
+  in TRT-LLM 1.3.0rc22 it reports `supports_structural_tag()=False`, so
+  the server's strict-tool constrained decoding was a **silent no-op**.
+  The patch adds the grammar anchors (`<tool_call>\n<function=NAME>\n` …
+  `\n</function>\n</tool_call>`, JSON arguments constrained to the tool's
+  parameter schema) and a JSON-body fallback in `_parse_block`.
+* Serving wrapper: forces `strict=true` on declared tools, adds
+  `</think>` as a grammar trigger (ending the reasoning block forces a
+  well-formed call — the model is unreliable about emitting `<tool_call>`
+  on its own), and injects a default `thinking_token_budget` (1200,
+  `TRTLLM_DEFAULT_THINKING_BUDGET`) so thinking always terminates and the
+  trigger always fires.
+
+Validation: the production-shaped request (ARC system prompt + python
+tool, thinking enabled) returns **natively parsed** python tool calls
+(`chatcmpl-tool-*` ids from the qwen3_coder parser, not recovery-shim
+rescues): greedy deterministic, and **8/8 at temperature 0.6 under 8-way
+concurrency** with the budget active (5/8–8/8 without it, the leak being
+EOS sampled inside the think block). The readiness smoke now uses the
+production request shape and rejects recovery-shim rescues.
+
+## Host stability during launches
+
+Launching on a 16-core / 62 GB / 2 GB-swap workstation OOM-killed desktop
+services: the 34 GB weight load plus torch-inductor's default compile
+fan-out (min(32, ncpu) workers, each spawning nvcc/cudafe++ pipelines at
+1–3 GB RSS) exhausted RAM. Fixes in `run_env.sh` / the launch script:
+`TORCHINDUCTOR_COMPILE_THREADS=4`, `MAX_JOBS=4`, persistent inductor/
+triton caches under `~/trt/cache`, and the server now runs inside a
+`systemd-run --user --scope` with `MemoryMax=50G`, `TasksMax=256`,
+`CPUWeight=50` (disable with `TRTLLM_NO_SCOPE=1`).
+
 ## Environment notes / deviations from the handoff
 
 * `tensorrt_llm==1.3.0rc22` from pypi.nvidia.com is ABI-locked to

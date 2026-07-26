@@ -58,23 +58,47 @@ def main() -> None:
     print(json.dumps({"smoke": "multimodal", "ok": ok_mm,
                       "usage": mm.get("usage")}), flush=True)
 
+    # Tool-call smoke uses the PRODUCTION request shape: the ARC system
+    # prompt plus the python tool, thinking enabled. This is the driver's
+    # readiness gate ("the exact production request returns a parsed python
+    # call"). A bare "call the tool" prompt is not representative: without
+    # the production system prompt the model may never emit the
+    # `<tool_call>` trigger that arms the strict-mode structural tags.
+    import sys as _sys
+    from pathlib import Path as _Path
+    _repo = _Path(__file__).resolve().parents[2]
+    if str(_repo) not in _sys.path:
+        _sys.path.insert(0, str(_repo))
+    from inference.agent.tool_agent import (_PYTHON_TOOL_DESCRIPTION,
+                                            _build_system_prompt)
     tool = post(args.base_url, {
         "model": args.model,
-        "messages": [{"role": "user", "content": (
-            "Call the python tool now with code that assigns the integer 1 "
-            "to a variable named smoke_value. Do not answer with prose.")}],
+        "messages": [
+            {"role": "system",
+             "content": _build_system_prompt(tool_output_tokens=2048)},
+            {"role": "user", "content": (
+                "Level 1, step 0. The current grid is 8x8, all cells value 0 "
+                "except a 2x2 block of value 3 at rows 2-3, cols 4-5. "
+                "valid_actions: ['up','down','left','right']. "
+                "Inspect the state and take your first action.")},
+        ],
         "tools": [{"type": "function", "function": {
-            "name": "python", "description": "Execute Python code.",
+            "name": "python", "description": _PYTHON_TOOL_DESCRIPTION,
             "parameters": {"type": "object",
                            "properties": {"code": {"type": "string"}},
                            "required": ["code"]}}}],
         "tool_choice": "auto", "stream": False,
-        "temperature": 0.0, "top_p": 1.0, "max_tokens": 128,
-        "chat_template_kwargs": {"enable_thinking": False},
+        "temperature": 0.0, "top_p": 1.0, "max_tokens": 2048,
+        "chat_template_kwargs": {"enable_thinking": True},
     })
     tmsg = (tool.get("choices") or [{}])[0].get("message") or {}
     calls = tmsg.get("tool_calls") or []
-    ok_tool = bool(calls) and (calls[0].get("function") or {}).get("name") == "python"
+    # Require a NATIVELY parsed tool call: recovery-shim rescues (ids of the
+    # form call_recovered_*) indicate the model emitted malformed markup and
+    # do not qualify as a working tool-call path.
+    ok_tool = (bool(calls)
+               and (calls[0].get("function") or {}).get("name") == "python"
+               and not str(calls[0].get("id", "")).startswith("call_recovered"))
     print(json.dumps({"smoke": "python_tool_call", "ok": ok_tool,
                       "tool_calls": calls[:1]}), flush=True)
 

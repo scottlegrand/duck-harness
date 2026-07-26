@@ -72,6 +72,49 @@ def main() -> None:
     from fastapi.responses import JSONResponse
     from tensorrt_llm.serve.openai_protocol import ChatCompletionRequest
 
+    # Deployment policy: with thinking enabled, also arm the strict-tool
+    # grammar on `</think>` so the transition out of the reasoning block
+    # forces a well-formed tool call. The model on this stack is unreliable
+    # about emitting the `<tool_call>` trigger on its own (prompt-sensitive
+    # at greedy), and every ARC production turn must act through the python
+    # tool. Thinking remains unconstrained.
+    import tensorrt_llm.serve.openai_server as _oas
+    _orig_strict_builder = _oas._build_tool_strict_guided_decoding_params
+
+    def _strict_builder_with_think_trigger(tools, tool_parser_name):
+        params = _orig_strict_builder(tools, tool_parser_name)
+        if params is None or not getattr(params, "structural_tag", None):
+            return params
+        try:
+            spec = json.loads(params.structural_tag)
+            fmt = spec.get("format") or {}
+            if fmt.get("type") != "triggered_tags":
+                return params
+            think_tags = []
+            for tag in fmt.get("tags", []):
+                begin = tag.get("begin", "")
+                if begin.startswith("<tool_call>"):
+                    think_tags.append({
+                        "type": tag.get("type", "tag"),
+                        "begin": "</think>\n\n" + begin,
+                        "content": tag.get("content"),
+                        "end": tag.get("end"),
+                    })
+            if not think_tags:
+                return params
+            fmt["tags"] = list(fmt.get("tags", [])) + think_tags
+            fmt["triggers"] = sorted(set(fmt.get("triggers", []))
+                                     | {"</think>"})
+            spec["format"] = fmt
+            params.structural_tag = json.dumps(spec)
+        except Exception as exc:  # noqa: BLE001 - fall back to base grammar
+            print(json.dumps({"event": "think_trigger_patch_error",
+                              "error": repr(exc)}), flush=True)
+        return params
+
+    _oas._build_tool_strict_guided_decoding_params = (
+        _strict_builder_with_think_trigger)
+
     class RecoveringOpenAIServer(OpenAIServer):
         # Signature annotations must match the parent: FastAPI derives the
         # request-body parsing from the endpoint's type hints, and they must
@@ -79,6 +122,28 @@ def main() -> None:
         # get_type_hints pass.
         async def openai_chat(self, request: ChatCompletionRequest,
                               raw_request: FastAPIRequest):  # type: ignore[override]
+            # Force strict mode on all declared tools so the engine's
+            # xgrammar structural tags constrain generation to the
+            # qwen3_coder tool-call grammar. This checkpoint's unconstrained
+            # output emits malformed pseudo-tool markup on this stack; the
+            # ARC client does not set strict itself.
+            if request.tools:
+                for tool in request.tools:
+                    if tool.function.strict is None:
+                        tool.function.strict = True
+                # With thinking enabled, a default thinking budget makes the
+                # tool call deterministic: the budget processor forces
+                # `</think>` at the limit, which arms the strict-tool grammar
+                # (see _strict_builder_with_think_trigger). Without it the
+                # model occasionally samples EOS inside the think block and
+                # the turn ends with no tool call (~2/8 observed at temp 0.6).
+                kwargs = request.chat_template_kwargs or {}
+                if (kwargs.get("enable_thinking", True)
+                        and request.thinking_token_budget is None):
+                    budget = int(os.environ.get(
+                        "TRTLLM_DEFAULT_THINKING_BUDGET", "1200"))
+                    if budget > 0:
+                        request.thinking_token_budget = budget
             response = await super().openai_chat(request, raw_request)
             try:
                 if int(getattr(response, "status_code", 200)) == 200:
@@ -108,6 +173,11 @@ def main() -> None:
         # LLM.get_stats() returns [] unless iteration stats are enabled;
         # they default to off (llm_args.enable_iter_perf_stats=False).
         enable_iter_perf_stats=True,
+        # Required for the server's strict-tool structural-tag constrained
+        # decoding (_build_tool_strict_guided_decoding_params): without a
+        # backend the GuidedDecodingParams are silently ignored and the
+        # model free-forms malformed pseudo-tool markup on this stack.
+        guided_decoding_backend="xgrammar",
     )
     server = RecoveringOpenAIServer(
         generator=llm,

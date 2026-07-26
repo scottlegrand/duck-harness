@@ -1,0 +1,53 @@
+--- /home/slegrand/trt/pristine/qwen3_coder_parser.py.orig	2026-07-26 07:11:25.339509189 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/serve/tool_parser/qwen3_coder_parser.py	2026-07-26 07:12:28.205763996 -0700
+@@ -11,6 +11,7 @@
+ from tensorrt_llm.serve.tool_parser.base_tool_parser import BaseToolParser
+ from tensorrt_llm.serve.tool_parser.core_types import (
+     StreamingParseResult,
++    StructureInfo,
+     ToolCallItem,
+     _GetInfoFunc,
+ )
+@@ -317,6 +318,18 @@
+                 # Convert parameter value to the correct type.
+                 param_config = self._get_arguments_config(fname, tools)
+                 params[pname] = self._convert_param_value(pval, pname, param_config, fname)
++            if not params:
++                # Strict-mode structural tags constrain the function body to
++                # a JSON object matching the tool's parameters schema (see
++                # structure_info); accept it as the arguments payload.
++                candidate = body.strip()
++                if candidate.startswith("{") and candidate.endswith("}"):
++                    try:
++                        parsed = json.loads(candidate)
++                        if isinstance(parsed, dict):
++                            params = parsed
++                    except json.JSONDecodeError:
++                        pass
+             res.append(
+                 ToolCallItem(
+                     tool_index=-1,
+@@ -327,10 +340,21 @@
+         return res
+ 
+     def supports_structural_tag(self) -> bool:
+-        return False
++        return True
+ 
+     def structure_info(self) -> _GetInfoFunc:
+-        raise NotImplementedError
++        # Structural-tag anchors for strict-mode constrained decoding.
++        # After the model naturally emits the `<tool_call>` trigger, the
++        # grammar forces `<function=NAME>` followed by a JSON object
++        # constrained to the tool's parameters schema (the server builder
++        # uses content type json_schema for strict tools), then the closing
++        # tags. `_parse_block` accepts the JSON body via the fallback below,
++        # so strict-mode calls parse natively.
++        return lambda name: StructureInfo(
++            begin="<tool_call>\n<function=" + name + ">\n",
++            end="\n</function>\n</tool_call>",
++            trigger="<tool_call>",
++        )
+ 
+     def _get_arguments_config(self, func_name: str, tools: list[Tool] | None) -> dict:
+         """Extract argument configuration for a function."""

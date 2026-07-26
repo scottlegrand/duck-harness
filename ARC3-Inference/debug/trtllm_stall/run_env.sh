@@ -5,6 +5,17 @@ export OPENMPI_RT="${OPENMPI_RT:-/home/slegrand/trt/openmpi-rt}"
 export LD_LIBRARY_PATH="$OPENMPI_RT/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export PATH="$OPENMPI_RT/bin:$TRTLLM_VENV/bin:$PATH"
 export PYTHONUNBUFFERED=1
+# Keep JIT compilation from taking the host down: torch-inductor defaults to
+# min(32, ncpu) parallel compile workers, each of which can invoke nvcc
+# (cudafe++/cicc at 1-3 GB RSS each) during max-autotune. On a 16-core/62 GB
+# box that storm lands on top of the 34 GB weight load and OOMs the desktop.
+export TORCHINDUCTOR_COMPILE_THREADS=4
+export MAX_JOBS=4
+# Persistent compile caches so relaunches skip compilation entirely
+# (defaults live in /tmp and vanish on reboot).
+export TORCHINDUCTOR_CACHE_DIR="$HOME/trt/cache/inductor"
+export TRITON_CACHE_DIR="$HOME/trt/cache/triton"
+mkdir -p "$TORCHINDUCTOR_CACHE_DIR" "$TRITON_CACHE_DIR"
 # All MPI ranks are local; keep OpenMPI off the docker/LAN interfaces.
 export OMPI_MCA_btl=self,sm,tcp
 export OMPI_MCA_btl_tcp_if_include=lo

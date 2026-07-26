@@ -1,0 +1,30 @@
+--- /home/slegrand/trt/pristine/openai_server.py.orig	2026-07-26 05:42:51.681662082 -0700
++++ /home/slegrand/trt/trtllm-env/lib/python3.12/site-packages/tensorrt_llm/serve/openai_server.py	2026-07-26 05:43:03.541582132 -0700
+@@ -1485,7 +1485,12 @@
+                 request, self.allow_request_chat_template)
+             conversation: List[ConversationMessage] = []
+             tool_dicts = None if request.tools is None else [
+-                tool.model_dump() for tool in request.tools
++                # exclude_none: pydantic defaults (e.g. function.strict=None)
++                # must not leak into the chat template's `tool | tojson`
++                # rendering -- the model was never trained on a "strict"
++                # field and vLLM serializes tools without None fields, so
++                # including them diverges the prompt between backends.
++                tool.model_dump(exclude_none=True) for tool in request.tools
+             ]
+             # Pass the model vocabulary size so ``logit_bias`` can be
+             # expanded into an embedding bias tensor in the sampler.
+@@ -1707,7 +1712,12 @@
+                 request, self.allow_request_chat_template)
+             conversation: List[ConversationMessage] = []
+             tool_dicts = None if request.tools is None else [
+-                tool.model_dump() for tool in request.tools
++                # exclude_none: pydantic defaults (e.g. function.strict=None)
++                # must not leak into the chat template's `tool | tojson`
++                # rendering -- the model was never trained on a "strict"
++                # field and vLLM serializes tools without None fields, so
++                # including them diverges the prompt between backends.
++                tool.model_dump(exclude_none=True) for tool in request.tools
+             ]
+ 
+             try:

@@ -22,12 +22,25 @@ echo "diag: $DIAG"
 python -V | tee -a "$LOG.meta"
 pip list 2>/dev/null | grep -iE "tensorrt|torch|flashinfer|triton" >> "$LOG.meta" || true
 
-python "$HERE/launch_server.py" \
-  --model-path "$MODEL_PATH" \
-  --served-model-name "$SERVED_MODEL_NAME" \
-  --host 0.0.0.0 --port 8000 \
-  --diag-file "$DIAG" \
-  >> "$LOG" 2>&1 &
+# Containment: a launch must never take the host down. On a 16-core/62 GB
+# box the 34 GB weight load plus torch-inductor's default compile-worker
+# fan-out (min(32,ncpu) workers, each spawning nvcc/cudafe++ at 1-3 GB RSS)
+# OOM-killed desktop services. run_env.sh caps compile parallelism and
+# pins persistent caches; this scope hard-caps memory/tasks so any overrun
+# kills only the server.
+LAUNCH=(python "$HERE/launch_server.py"
+  --model-path "$MODEL_PATH"
+  --served-model-name "$SERVED_MODEL_NAME"
+  --host 0.0.0.0 --port 8000
+  --diag-file "$DIAG")
+if command -v systemd-run >/dev/null 2>&1 && [ -z "${TRTLLM_NO_SCOPE:-}" ]; then
+  systemd-run --user --scope --unit="trtllm-$STAMP" \
+    -p MemoryMax="${TRTLLM_SCOPE_MEMMAX:-50G}" -p MemorySwapMax=1G \
+    -p TasksMax=256 -p CPUWeight=50 \
+    "${LAUNCH[@]}" >> "$LOG" 2>&1 &
+else
+  "${LAUNCH[@]}" >> "$LOG" 2>&1 &
+fi
 SERVER_PID=$!
 echo "server pid: $SERVER_PID"
 
