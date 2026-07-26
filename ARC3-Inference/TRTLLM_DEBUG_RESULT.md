@@ -40,6 +40,40 @@ response observed on Kaggle (2,040 tokens).
 No concurrency was reduced, no requests are dropped, no HTTP timeouts are
 involved, and the ARC solver was not modified.
 
+## How to apply the fix (exact steps)
+
+The fix is one hunk in the installed TensorRT-LLM package plus one
+environment variable. On any machine with `tensorrt-llm==1.3.0rc22`
+installed in a venv:
+
+```bash
+cd ARC3-Inference/debug/trtllm_stall
+
+# 1. Patch the installed package (idempotent; also installs the
+#    diagnostics module and the two prerequisite fixes):
+./apply_patches.sh /path/to/venv/bin/python
+
+# 2. Set the implicit cap for the serving process (run_env.sh already
+#    exports this; 0 disables the fix and restores the stall):
+export TRTLLM_IMPLICIT_MAX_TOKENS_CAP=8192
+
+# 3. Restart the server — the cap is read in the MPI worker at request
+#    submission time, so a running engine must be restarted:
+./launch_trtllm_server.sh
+```
+
+The essential change (patch `0004-base-worker-implicit-max-tokens-cap.patch`,
+`tensorrt_llm/executor/base_worker.py::_deduce_max_tokens`): when the client
+omitted `max_tokens`, return
+`min(max_seq_len - prompt_len, TRTLLM_IMPLICIT_MAX_TOKENS_CAP)` instead of
+`max_seq_len - prompt_len`. User-supplied values are untouched. There is no
+config-only workaround inside stock 1.3.0rc22: without this patch the only
+mitigation is every client always sending a small `max_tokens`, which the
+handoff correctly rejects as a production fix.
+
+Full bootstrap for a fresh machine (venv, OpenMPI, model download):
+`debug/trtllm_stall/README.md`.
+
 ## Reproduction (handoff step 1–2)
 
 Standalone rolling workload: `debug/trtllm_stall/rolling_client.py`
