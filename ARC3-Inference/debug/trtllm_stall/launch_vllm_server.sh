@@ -96,6 +96,15 @@ fi
 if [ -z "${VLLM_ALLOW_CUDNN_V8:-}" ]; then
   EXTRA_DIAG+=(TORCH_CUDNN_V8_API_DISABLED=1)
 fi
+# Live cuda-gdb attach to the 15:33 wedge (tokens frozen, 28 running, GPU
+# 100% at low power) caught flashinfer::sampling::RadixTopKMaskLogits
+# Kernel_MultiCTA spinning in its inter-CTA software barrier — the sampler
+# runs every decode step (top_k=20 default, 248k vocab) and its MultiCTA
+# spin-wait deadlocks. Fall back to the torch-native top-k/top-p sampler.
+# VLLM_ALLOW_FLASHINFER_SAMPLER=1 restores it for A/B.
+if [ -z "${VLLM_ALLOW_FLASHINFER_SAMPLER:-}" ]; then
+  EXTRA_DIAG+=(VLLM_USE_FLASHINFER_SAMPLER=0)
+fi
 ENVV=(env
   "${EXTRA_DIAG[@]}"
   CUDA_COREDUMP_GENERATION_FLAGS='CU_COREDUMP_SKIP_GLOBAL_MEMORY,CU_COREDUMP_SKIP_SHARED_MEMORY,CU_COREDUMP_SKIP_LOCAL_MEMORY'
