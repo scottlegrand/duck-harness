@@ -23,7 +23,7 @@ import requests
 
 STOP = threading.Event()
 STATS_LOCK = threading.Lock()
-STATS = {"turns": 0, "replays": 0, "errors": 0, "http_errors": {}}
+STATS = {"turns": 0, "replays": 0, "errors": 0, "http_errors": {}, "max_convo": 0}
 
 
 def make_grid_png(seed: int, cells: int = 24, px: int = 28) -> str:
@@ -63,6 +63,10 @@ def worker(idx: int, args, images: list[str]):
     turn = 0
     while not STOP.is_set():
         turn += 1
+        # Absolute backstop: no failure mode may grow a conversation past
+        # its intended replay size.
+        if len(convo) > 2 * args.turns_per_convo:
+            convo = []
         img = images[(idx * 31 + turn * 7) % len(images)]
         convo.append(
             {
@@ -76,6 +80,8 @@ def worker(idx: int, args, images: list[str]):
                 ],
             }
         )
+        with STATS_LOCK:
+            STATS["max_convo"] = max(STATS["max_convo"], len(convo))
         body = {
             "model": args.model,
             "messages": [{"role": "system", "content": SYSTEM}] + convo,
@@ -91,6 +97,13 @@ def worker(idx: int, args, images: list[str]):
                     STATS["errors"] += 1
                     k = str(r.status_code)
                     STATS["http_errors"][k] = STATS["http_errors"].get(k, 0) + 1
+                # Drop the just-appended user turn so a failing request
+                # doesn't compound the conversation forever (a server
+                # outage otherwise balloons it past max_model_len and
+                # every subsequent request 400s).
+                convo.pop()
+                if r.status_code == 400:
+                    convo = []
                 time.sleep(1)
                 continue
             msg = r.json()["choices"][0]["message"]
@@ -101,6 +114,12 @@ def worker(idx: int, args, images: list[str]):
         except Exception:
             with STATS_LOCK:
                 STATS["errors"] += 1
+            # Same rule as the HTTP-error path: a failed request must not
+            # leave its user turn behind, or a server outage compounds the
+            # conversation into a preprocessing bomb (each retry then makes
+            # the APIServer decode hundreds of images into host RAM before
+            # validation — this OOM-killed the server twice).
+            convo.pop()
             time.sleep(2)
             continue
 
