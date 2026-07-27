@@ -17,6 +17,78 @@ index eb1c3af15..aa2c31b1e 100644
          T = eos - bos
          NT = tl.cdiv(T, BT)
          boh = tl.load(chunk_offsets + i_n).to(tl.int32)
+diff --git a/vllm/model_executor/layers/fla/ops/chunk_o.py b/vllm/model_executor/layers/fla/ops/chunk_o.py
+index 0c323b8ce..2f15d3829 100644
+--- a/vllm/model_executor/layers/fla/ops/chunk_o.py
++++ b/vllm/model_executor/layers/fla/ops/chunk_o.py
+@@ -73,6 +73,14 @@ def chunk_fwd_kernel_o(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+         NT = tl.cdiv(T, BT)
+     else:
+diff --git a/vllm/model_executor/layers/fla/ops/chunk_scaled_dot_kkt.py b/vllm/model_executor/layers/fla/ops/chunk_scaled_dot_kkt.py
+index a715504da..10a59efef 100644
+--- a/vllm/model_executor/layers/fla/ops/chunk_scaled_dot_kkt.py
++++ b/vllm/model_executor/layers/fla/ops/chunk_scaled_dot_kkt.py
+@@ -60,6 +60,14 @@ def chunk_scaled_dot_kkt_fwd_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
+diff --git a/vllm/model_executor/layers/fla/ops/cumsum.py b/vllm/model_executor/layers/fla/ops/cumsum.py
+index b0820104b..3a2002b57 100644
+--- a/vllm/model_executor/layers/fla/ops/cumsum.py
++++ b/vllm/model_executor/layers/fla/ops/cumsum.py
+@@ -48,6 +48,14 @@ def chunk_local_cumsum_scalar_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
+@@ -107,6 +115,14 @@ def chunk_local_cumsum_vector_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
 diff --git a/vllm/model_executor/layers/fla/ops/fused_recurrent.py b/vllm/model_executor/layers/fla/ops/fused_recurrent.py
 index 920efa444..5a0de28d4 100644
 --- a/vllm/model_executor/layers/fla/ops/fused_recurrent.py
@@ -192,6 +264,74 @@ index 7e0c7e05c..1a0deab25 100644
          B=B,
          H=H,
          HV=HV,
+diff --git a/vllm/model_executor/layers/fla/ops/solve_tril.py b/vllm/model_executor/layers/fla/ops/solve_tril.py
+index 8d3811ca4..e1981bfed 100644
+--- a/vllm/model_executor/layers/fla/ops/solve_tril.py
++++ b/vllm/model_executor/layers/fla/ops/solve_tril.py
+@@ -58,6 +58,14 @@ def solve_tril_16x16_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
+@@ -133,6 +141,14 @@ def merge_16x16_to_32x32_inverse_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
+@@ -258,6 +274,14 @@ def merge_16x16_to_64x64_inverse_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
+diff --git a/vllm/model_executor/layers/fla/ops/wy_fast.py b/vllm/model_executor/layers/fla/ops/wy_fast.py
+index 52d2b2819..0a2b175d9 100644
+--- a/vllm/model_executor/layers/fla/ops/wy_fast.py
++++ b/vllm/model_executor/layers/fla/ops/wy_fast.py
+@@ -57,6 +57,14 @@ def recompute_w_u_fwd_kernel(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Corrupt/racing chunk_indices or cu_seqlens must not become
++        # store addresses or loop extents: clamp to the physical token
++        # range and skip inconsistent programs (see chunk_delta_h.py).
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+     else:
+         bos, eos = i_b * T, i_b * T + T
 diff --git a/vllm/model_executor/layers/mamba/ops/causal_conv1d.py b/vllm/model_executor/layers/mamba/ops/causal_conv1d.py
 index f7c237ca2..50c8e484f 100644
 --- a/vllm/model_executor/layers/mamba/ops/causal_conv1d.py

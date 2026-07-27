@@ -60,6 +60,20 @@ if [ -z "${VLLM_NO_LAUNCH_BLOCKING:-}" ]; then
 else
   EXTRA_DIAG=()
 fi
+# GPU exception forensics: on a device-side exception (including the display
+# watchdog's "launch timed out" kill), the driver writes a lightweight GPU
+# coredump naming the exact kernel and PC — no more guessing which kernel the
+# watchdog terminated from downstream cuBLAS wreckage. Lightweight mode skips
+# memory contents so the dump is small and fast. Zero cost until an exception.
+# Disable with VLLM_NO_CUDA_COREDUMP=1.
+if [ -z "${VLLM_NO_CUDA_COREDUMP:-}" ]; then
+  mkdir -p "$HOME/trt/evidence/cuda-coredumps"
+  EXTRA_DIAG+=(
+    CUDA_ENABLE_COREDUMP_ON_EXCEPTION=1
+    CUDA_ENABLE_LIGHTWEIGHT_COREDUMP=1
+    CUDA_COREDUMP_FILE="$HOME/trt/evidence/cuda-coredumps/core-%h-%p.nvcudmp"
+  )
+fi
 ENVV=(env
   "${EXTRA_DIAG[@]}"
   PYTHONPATH="/home/slegrand/trt/ptrace-site${PYTHONPATH:+:$PYTHONPATH}"
