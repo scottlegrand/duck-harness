@@ -20,7 +20,11 @@ echo "log: $LOG"
 source /home/slegrand/miniconda3/etc/profile.d/conda.sh
 conda activate vllm
 
-LAUNCH=(vllm serve "$MODEL_PATH"
+# PR_SET_PTRACER_ANY so py-spy/gdb can attach to a live hang under
+# ptrace_scope=1 (the 18:23 EngineCore wedge was undebuggable without it).
+VLLM_BIN="$(command -v vllm)"
+PTRACE_WRAP="import ctypes,runpy,sys; ctypes.CDLL('libc.so.6').prctl(0x59616d61, ctypes.c_ulong(-1), 0, 0, 0); sys.argv[0]='$VLLM_BIN'; runpy.run_path('$VLLM_BIN', run_name='__main__')"
+LAUNCH=(python -c "$PTRACE_WRAP" serve "$MODEL_PATH"
   --served-model-name vrfai/Qwen3.6-27B-FP8
   --host 0.0.0.0 --port 8000
   --gpu-memory-utilization "${VLLM_GPU_UTIL:-0.85}"
@@ -35,8 +39,18 @@ LAUNCH=(vllm serve "$MODEL_PATH"
 # (median 16 tok/s/seq vs 0.5-4), which is what keeps ARC turns inside the
 # client's 900 s deadline. Set VLLM_FORCE_EAGER=1 for a conservative boot.
 [ -n "${VLLM_FORCE_EAGER:-}" ] && LAUNCH+=(--enforce-eager)
+# Compiled kernels WITHOUT cudagraph replay: the 18:23:50 EngineCore wedge
+# (tokens frozen with 24 running, GPU spinning 100% at low power, all host
+# threads futex-parked, no exception, no Xid) appeared only under the full
+# compile+cudagraph config; the eager run never wedged in 856 requests.
+# Compile gives back most of the eager 0.5-4 tok/s/seq deficit; graphs are
+# the isolated suspect. Re-enable with VLLM_ALLOW_CUDAGRAPHS=1 to test.
+if [ -z "${VLLM_FORCE_EAGER:-}" ] && [ -z "${VLLM_ALLOW_CUDAGRAPHS:-}" ]; then
+  LAUNCH+=(-cc.cudagraph_mode=none)
+fi
 
 ENVV=(env
+  PYTHONPATH="/home/slegrand/trt/ptrace-site${PYTHONPATH:+:$PYTHONPATH}"
   VLLM_ENGINE_READY_TIMEOUT_S=2400
   TORCHINDUCTOR_COMPILE_THREADS=4
   MAX_JOBS=4
