@@ -1,0 +1,194 @@
+diff --git a/vllm/model_executor/layers/fla/ops/chunk_delta_h.py b/vllm/model_executor/layers/fla/ops/chunk_delta_h.py
+index eb1c3af15..aa2c31b1e 100644
+--- a/vllm/model_executor/layers/fla/ops/chunk_delta_h.py
++++ b/vllm/model_executor/layers/fla/ops/chunk_delta_h.py
+@@ -76,6 +76,14 @@ def chunk_gated_delta_rule_fwd_kernel_h_blockdim64(
+             tl.load(cu_seqlens + i_n).to(tl.int32),
+             tl.load(cu_seqlens + i_n + 1).to(tl.int32),
+         )
++        # Guard against corrupt/stale cu_seqlens (see fused_recurrent.py):
++        # a garbage positive T here becomes an unbounded NT chunk loop that
++        # wedges the engine at 100% SM with no error raised.
++        if bos < 0 or bos >= T:
++            return
++        eos = tl.minimum(eos, T)
++        if eos <= bos:
++            return
+         T = eos - bos
+         NT = tl.cdiv(T, BT)
+         boh = tl.load(chunk_offsets + i_n).to(tl.int32)
+diff --git a/vllm/model_executor/layers/fla/ops/fused_recurrent.py b/vllm/model_executor/layers/fla/ops/fused_recurrent.py
+index 920efa444..5a0de28d4 100644
+--- a/vllm/model_executor/layers/fla/ops/fused_recurrent.py
++++ b/vllm/model_executor/layers/fla/ops/fused_recurrent.py
+@@ -39,6 +39,7 @@ def fused_recurrent_gated_delta_rule_fwd_kernel(
+     scale,
+     N: tl.int64,  # num of sequences
+     T: tl.int64,  # num of tokens
++    NUM_SLOTS: tl.int64,  # size of the recurrent-state pool (bounds slot indices)
+     B: tl.constexpr,
+     H: tl.constexpr,
+     HV: tl.constexpr,
+@@ -68,13 +69,22 @@ def fused_recurrent_gated_delta_rule_fwd_kernel(
+             tl.load(cu_seqlens + i_n + 1).to(tl.int64),
+         )
+         all = T
++        # Corrupt or stale cu_seqlens entries (non-monotonic tails,
++        # async-build races, reads past the initialized region) must not
++        # become unbounded loop trip counts: a garbage positive T = eos - bos
++        # spins this program for up to ~2^31 iterations at 100% SM and wedges
++        # the entire engine with no error, no assert, and no Xid. Clamp to
++        # the physical token range and skip on any inconsistency.
++        if bos < 0 or bos >= all:
++            return
++        eos = tl.minimum(eos, all)
+         T = eos - bos
+     else:
+         bos, eos = i_n * T, i_n * T + T
+         all = B * T
+ 
+-    if T == 0:
+-        # no tokens to process for this sequence
++    if T <= 0:
++        # no tokens to process for this sequence (or corrupt metadata)
+         return
+ 
+     o_k = i_k * BK + tl.arange(0, BK)
+@@ -113,6 +123,13 @@ def fused_recurrent_gated_delta_rule_fwd_kernel(
+             # Skip if state index is invalid (NULL_BLOCK_ID=0)
+             if state_idx <= 0:
+                 return
++            # A garbage-positive slot index dereferences past the state pool:
++            # the load is silently wrong and the matching final-state store
++            # scribbles a [BV, BK] tile over foreign allocations (observed as
++            # delayed CUBLAS launch failures). Scream and skip instead.
++            if state_idx >= NUM_SLOTS:
++                tl.device_print("GDN_OOB_STATE_LOAD slot=", state_idx)
++                return
+             p_h0 = h0 + state_idx * stride_init_state_token
+         else:
+             p_h0 = h0 + bos * HV * V * K
+@@ -155,7 +172,11 @@ def fused_recurrent_gated_delta_rule_fwd_kernel(
+                 ssm_state_indices + i_n * stride_indices_seq + i_t
+             ).to(tl.int64)
+             # Only store if state index is valid (not NULL_BLOCK_ID=0)
+-            if final_state_idx > 0:
++            # and inside the pool - an out-of-range index would write a
++            # [BV, BK] tile over whatever lives after the state cache.
++            if final_state_idx >= NUM_SLOTS:
++                tl.device_print("GDN_OOB_STATE_STORE slot=", final_state_idx)
++            if final_state_idx > 0 and final_state_idx < NUM_SLOTS:
+                 p_ht = ht + final_state_idx * stride_final_state_token
+                 p_ht = p_ht + i_hv * V * K + o_v[:, None] * K + o_k[None, :]
+                 tl.store(p_ht, b_h.to(p_ht.dtype.element_ty), mask=mask_h)
+@@ -230,6 +251,7 @@ def fused_recurrent_gated_delta_rule_fwd(
+         scale=scale,
+         N=N,
+         T=T,
++        NUM_SLOTS=initial_state.size(0) if initial_state is not None else 0,
+         B=B,
+         H=H,
+         HV=HV,
+@@ -270,6 +292,7 @@ def fused_recurrent_gated_delta_rule_packed_decode_kernel(
+     stride_init_state_token: tl.constexpr,
+     stride_final_state_token: tl.constexpr,
+     stride_indices_seq: tl.constexpr,
++    NUM_SLOTS: tl.int64,  # size of the recurrent-state pool (bounds slot indices)
+     H: tl.constexpr,
+     HV: tl.constexpr,
+     K: tl.constexpr,
+@@ -297,6 +320,14 @@ def fused_recurrent_gated_delta_rule_packed_decode_kernel(
+         zero = tl.zeros([BV], dtype=tl.float32).to(p_o.dtype.element_ty)
+         tl.store(p_o, zero, mask=mask_v)
+         return
++    # A garbage-positive slot index reads past the state pool and, worse,
++    # stores a [BV, BK] tile over foreign allocations at the end of this
++    # kernel (observed as delayed CUBLAS launch failures). Scream and skip.
++    if state_idx >= NUM_SLOTS:
++        tl.device_print("GDN_OOB_STATE_DECODE slot=", state_idx)
++        zero = tl.zeros([BV], dtype=tl.float32).to(p_o.dtype.element_ty)
++        tl.store(p_o, zero, mask=mask_v)
++        return
+ 
+     p_h0 = h0 + state_idx * stride_init_state_token
+     p_h0 = p_h0 + i_hv * V * K + o_v[:, None] * K + o_k[None, :]
+@@ -458,6 +489,7 @@ def fused_recurrent_gated_delta_rule_packed_decode(
+         ht=initial_state,
+         ssm_state_indices=ssm_state_indices,
+         scale=scale,
++        NUM_SLOTS=initial_state.size(0),
+         stride_mixed_qkv_tok=stride_mixed_qkv_tok,
+         stride_a_tok=stride_a_tok,
+         stride_b_tok=stride_b_tok,
+diff --git a/vllm/model_executor/layers/fla/ops/fused_sigmoid_gating.py b/vllm/model_executor/layers/fla/ops/fused_sigmoid_gating.py
+index 7e0c7e05c..1a0deab25 100644
+--- a/vllm/model_executor/layers/fla/ops/fused_sigmoid_gating.py
++++ b/vllm/model_executor/layers/fla/ops/fused_sigmoid_gating.py
+@@ -40,6 +40,7 @@ def fused_sigmoid_gating_delta_rule_update_kernel(
+     scale,
+     N: tl.int64,  # num of sequences
+     T: tl.int64,  # num of tokens
++    NUM_SLOTS: tl.int64,  # size of the recurrent-state pool (bounds slot indices)
+     B: tl.constexpr,
+     H: tl.constexpr,
+     HV: tl.constexpr,
+@@ -68,13 +69,22 @@ def fused_sigmoid_gating_delta_rule_update_kernel(
+             tl.load(cu_seqlens + i_n + 1).to(tl.int64),
+         )
+         all = T
++        # Corrupt or stale cu_seqlens entries (non-monotonic tails,
++        # async-build races, reads past the initialized region) must not
++        # become unbounded loop trip counts: a garbage positive T = eos - bos
++        # spins this program for up to ~2^31 iterations at 100% SM and wedges
++        # the entire engine with no error, no assert, and no Xid. Clamp to
++        # the physical token range and skip on any inconsistency.
++        if bos < 0 or bos >= all:
++            return
++        eos = tl.minimum(eos, all)
+         T = eos - bos
+     else:
+         bos, eos = i_n * T, i_n * T + T
+         all = B * T
+ 
+-    if T == 0:
+-        # no tokens to process for this sequence
++    if T <= 0:
++        # no tokens to process for this sequence (or corrupt metadata)
+         return
+ 
+     o_k = i_k * BK + tl.arange(0, BK)
+@@ -113,6 +123,13 @@ def fused_sigmoid_gating_delta_rule_update_kernel(
+             # Skip if state index is invalid (NULL_BLOCK_ID=0)
+             if state_idx <= 0:
+                 return
++            # A garbage-positive slot index dereferences past the state pool:
++            # the load is silently wrong and the matching final-state store
++            # scribbles a [BV, BK] tile over foreign allocations (observed as
++            # delayed CUBLAS launch failures). Scream and skip instead.
++            if state_idx >= NUM_SLOTS:
++                tl.device_print("GDN_OOB_STATE_LOAD slot=", state_idx)
++                return
+             p_h0 = h0 + state_idx * stride_init_state_token
+         else:
+             p_h0 = h0 + bos * HV * V * K
+@@ -160,7 +177,11 @@ def fused_sigmoid_gating_delta_rule_update_kernel(
+                 ssm_state_indices + i_n * stride_indices_seq + i_t
+             ).to(tl.int64)
+             # Only store if state index is valid (not NULL_BLOCK_ID=0)
+-            if final_state_idx > 0:
++            # and inside the pool — an out-of-range index would write a
++            # [BV, BK] tile over whatever lives after the state cache.
++            if final_state_idx >= NUM_SLOTS:
++                tl.device_print("GDN_OOB_STATE_STORE slot=", final_state_idx)
++            if final_state_idx > 0 and final_state_idx < NUM_SLOTS:
+                 p_ht = ht + final_state_idx * stride_final_state_token
+                 p_ht = p_ht + i_hv * V * K + o_v[:, None] * K + o_k[None, :]
+                 tl.store(p_ht, b_h.to(p_ht.dtype.element_ty), mask=mask_h)
+@@ -258,6 +279,7 @@ def fused_sigmoid_gating_delta_rule_update(
+         scale=scale,
+         N=N,
+         T=T,
++        NUM_SLOTS=initial_state.size(0) if initial_state is not None else 0,
+         B=B,
+         H=H,
+         HV=HV,
