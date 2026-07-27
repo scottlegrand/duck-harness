@@ -29,7 +29,7 @@ LAUNCH=(python -c "$PTRACE_WRAP" serve "$MODEL_PATH"
   --host 0.0.0.0 --port 8000
   --gpu-memory-utilization "${VLLM_GPU_UTIL:-0.85}"
   --max-model-len 65536
-  --max-num-batched-tokens 65536
+  --max-num-batched-tokens "${VLLM_MAX_BATCHED_TOKENS:-8192}"
   --max-num-seqs 28
   --no-enable-prefix-caching
   --enable-auto-tool-choice
@@ -50,12 +50,12 @@ if [ -z "${VLLM_FORCE_EAGER:-}" ] && [ -z "${VLLM_ALLOW_CUDAGRAPHS:-}" ]; then
   LAUNCH+=(-cc.cudagraph_mode=none)
 fi
 
-# Diagnostic mode: CUDA_LAUNCH_BLOCKING=1 makes kernel launches synchronous
-# so an on-device infinite spin pins the host INSIDE the guilty kernel's
-# launch frame (py-spy then names it exactly). ~30% slower; used to identify
-# the GDN-path kernel that wedges the engine. Disable with
-# VLLM_NO_LAUNCH_BLOCKING=1 once the culprit is identified and fixed.
-if [ -z "${VLLM_NO_LAUNCH_BLOCKING:-}" ]; then
+# CUDA_LAUNCH_BLOCKING is retired as the default: triton driver-API launches
+# bypass it (proven 07-27), so it cost ~30%+ decode throughput without naming
+# the guilty kernel. Exception forensics now come from the coredump +
+# CUDA_DEVICE_WAITS_ON_EXCEPTION trap below. Re-enable explicitly with
+# VLLM_LAUNCH_BLOCKING=1 if a runtime-API-side localization is ever needed.
+if [ -n "${VLLM_LAUNCH_BLOCKING:-}" ]; then
   EXTRA_DIAG=(CUDA_LAUNCH_BLOCKING=1)
 else
   EXTRA_DIAG=()
