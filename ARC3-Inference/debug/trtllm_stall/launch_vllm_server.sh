@@ -87,8 +87,18 @@ if [ -z "${VLLM_NO_CUDA_COREDUMP:-}" ]; then
     # Autopsy a dump with: cuda-gdb <python> <core.nvcudmp>
   )
 fi
+# The 13:43 crash's coredump names a cuDNN runtime-fusion kernel
+# (cudnn_generated_fort_native_*_matMul_pointwise_pointwise) dying with
+# "Warp Out of Range Register" — malformed codegen for this SM120 part.
+# Those kernels only exist behind torch's cuDNN v8 graph API; disabling it
+# falls back to legacy engines without runtime fusion. A/B knob:
+# VLLM_ALLOW_CUDNN_V8=1 restores the fusion engine.
+if [ -z "${VLLM_ALLOW_CUDNN_V8:-}" ]; then
+  EXTRA_DIAG+=(TORCH_CUDNN_V8_API_DISABLED=1)
+fi
 ENVV=(env
   "${EXTRA_DIAG[@]}"
+  CUDA_COREDUMP_GENERATION_FLAGS='CU_COREDUMP_SKIP_GLOBAL_MEMORY,CU_COREDUMP_SKIP_SHARED_MEMORY,CU_COREDUMP_SKIP_LOCAL_MEMORY'
   PYTHONPATH="/home/slegrand/trt/ptrace-site${PYTHONPATH:+:$PYTHONPATH}"
   VLLM_ENGINE_READY_TIMEOUT_S=2400
   TORCHINDUCTOR_COMPILE_THREADS=4
