@@ -30,8 +30,16 @@ LAUNCH=(python -c "$PTRACE_WRAP" serve "$MODEL_PATH"
   --gpu-memory-utilization "${VLLM_GPU_UTIL:-0.85}"
   --max-model-len 65536
   --max-num-batched-tokens "${VLLM_MAX_BATCHED_TOKENS:-8192}"
-  --max-num-seqs 28
-  --no-enable-prefix-caching
+  --max-num-seqs 28)
+# Prefix caching: default off for this hybrid GDN model (linear-attn state is
+# not block-checkpointable the way KV is); VLLM_ENABLE_PREFIX_CACHING=1 lets
+# vLLM try its hybrid prefix-caching support instead.
+if [ -n "${VLLM_ENABLE_PREFIX_CACHING:-}" ]; then
+  LAUNCH+=(--enable-prefix-caching)
+else
+  LAUNCH+=(--no-enable-prefix-caching)
+fi
+LAUNCH+=(
   --enable-auto-tool-choice
   --tool-call-parser qwen3_coder
   --reasoning-parser qwen3)
