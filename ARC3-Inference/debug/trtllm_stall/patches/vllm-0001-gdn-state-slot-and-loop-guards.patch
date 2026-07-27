@@ -192,3 +192,79 @@ index 7e0c7e05c..1a0deab25 100644
          B=B,
          H=H,
          HV=HV,
+diff --git a/vllm/model_executor/layers/mamba/ops/causal_conv1d.py b/vllm/model_executor/layers/mamba/ops/causal_conv1d.py
+index f7c237ca2..50c8e484f 100644
+--- a/vllm/model_executor/layers/mamba/ops/causal_conv1d.py
++++ b/vllm/model_executor/layers/mamba/ops/causal_conv1d.py
+@@ -137,6 +137,11 @@ def _causal_conv1d_fwd_kernel(  # continuous batching
+         if conv_states_input_coord == null_block_id:
+             # not processing as this is a null block (padding)
+             return
++    # A corrupt cache-line index would make every conv-state store below
++    # scribble past the pool. Scream and skip the sequence instead.
++    if (conv_states_input_coord < 0) or (conv_states_input_coord >= num_cache_lines):
++        tl.device_print("CONV1D_OOB_LINE slot=", conv_states_input_coord)
++        return
+     conv_states_base = (
+         conv_states_ptr
+         + (conv_states_input_coord * stride_conv_state_seq)
+@@ -221,6 +226,13 @@ def _causal_conv1d_fwd_kernel(  # continuous batching
+                 + idx_seq * stride_cache_indices
+                 + current_last_index
+             ).to(tl.int64)
++            if (conv_states_output_coord < 0) or (
++                conv_states_output_coord >= num_cache_lines
++            ):
++                tl.device_print(
++                    "CONV1D_OOB_STORE slot=", conv_states_output_coord
++                )
++                return
+ 
+             conv_states_ptrs_target = (
+                 conv_states_ptr
+@@ -370,6 +382,13 @@ def _causal_conv1d_fwd_kernel(  # continuous batching
+                 + current_first_index
+                 + (chunk_offset - 1)
+             ).to(tl.int64)
++            if (conv_states_output_coord < 0) or (
++                conv_states_output_coord >= num_cache_lines
++            ):
++                tl.device_print(
++                    "CONV1D_OOB_CHUNK_STORE slot=", conv_states_output_coord
++                )
++                return
+ 
+             conv_states_ptrs_target = (
+                 conv_states_ptr
+@@ -819,9 +838,19 @@ def _causal_conv1d_update_kernel(
+     if IS_VARLEN:
+         query_start_index = tl.load(query_start_loc_ptr + idx_seq).to(tl.int64)
+         query_end_index = tl.load(query_start_loc_ptr + (idx_seq + 1)).to(tl.int64)
++        # Corrupt or racing query_start_loc must not become a loop bound:
++        # a garbage-positive length spins the per-token loop below for up
++        # to ~2^31 iterations, trips the display watchdog ("launch timed
++        # out and was terminated"), and poisons the CUDA context. seqlen
++        # as passed in is the host-computed maximum, so anything larger
++        # (or negative) is corrupt metadata.
++        qlen = query_end_index - query_start_index
++        if (qlen < 0) or (qlen > seqlen):
++            tl.device_print("CONV1D_BAD_QLEN len=", qlen)
++            return
+         # revise state_len and seqlen
+-        state_len = state_len - (seqlen - (query_end_index - query_start_index))
+-        seqlen = query_end_index - query_start_index
++        state_len = state_len - (seqlen - qlen)
++        seqlen = qlen
+         x_offset = query_start_index * stride_x_token
+         o_offset = query_start_index * stride_o_token
+     else:
+@@ -922,6 +951,9 @@ def _causal_conv1d_update_kernel(
+     conv_states_offset = tl.load(
+         conv_state_indices_ptr + idx_seq * stride_state_indices + current_last_index
+     ).to(tl.int64)
++    if (conv_states_offset < 0) or (conv_states_offset >= num_cache_lines):
++        tl.device_print("CONV1D_OOB_USTORE slot=", conv_states_offset)
++        return
+     conv_state_ptrs_target = (
+         conv_state_ptr
+         + (conv_states_offset * stride_conv_state_seq)  # Offset from seq

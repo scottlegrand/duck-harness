@@ -17,7 +17,7 @@ while true; do
     # 4 consecutive failures (2 min) = the server is dead, not restarting:
     # auto-relaunch so a long harness run rides through on its 900 s
     # retries instead of dying with the engine.
-    if [ "$DOWN" -ge 4 ] && ! pgrep -f "vllm serve|runpy.run_path" > /dev/null; then
+    if [ -n "${VLLM_AUTO_RESTART:-}" ] && [ "$DOWN" -ge 4 ] && ! pgrep -f "vllm serve|runpy.run_path" > /dev/null; then
       echo "SERVER DEAD - AUTO-RESTARTING via $RESTART_CMD"
       nohup $RESTART_CMD > "$OUT/vllm-autorestart-$(date +%H%M%S).log" 2>&1 &
       DOWN=0
