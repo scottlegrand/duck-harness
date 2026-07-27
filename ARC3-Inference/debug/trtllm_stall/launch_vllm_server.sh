@@ -29,6 +29,7 @@ LAUNCH=(python -c "$PTRACE_WRAP" serve "$MODEL_PATH"
   --host 0.0.0.0 --port 8000
   --gpu-memory-utilization "${VLLM_GPU_UTIL:-0.85}"
   --max-model-len 65536
+  --max-num-batched-tokens 65536
   --max-num-seqs 28
   --no-enable-prefix-caching
   --enable-auto-tool-choice
@@ -49,7 +50,18 @@ if [ -z "${VLLM_FORCE_EAGER:-}" ] && [ -z "${VLLM_ALLOW_CUDAGRAPHS:-}" ]; then
   LAUNCH+=(-cc.cudagraph_mode=none)
 fi
 
+# Diagnostic mode: CUDA_LAUNCH_BLOCKING=1 makes kernel launches synchronous
+# so an on-device infinite spin pins the host INSIDE the guilty kernel's
+# launch frame (py-spy then names it exactly). ~30% slower; used to identify
+# the GDN-path kernel that wedges the engine. Disable with
+# VLLM_NO_LAUNCH_BLOCKING=1 once the culprit is identified and fixed.
+if [ -z "${VLLM_NO_LAUNCH_BLOCKING:-}" ]; then
+  EXTRA_DIAG=(CUDA_LAUNCH_BLOCKING=1)
+else
+  EXTRA_DIAG=()
+fi
 ENVV=(env
+  "${EXTRA_DIAG[@]}"
   PYTHONPATH="/home/slegrand/trt/ptrace-site${PYTHONPATH:+:$PYTHONPATH}"
   VLLM_ENGINE_READY_TIMEOUT_S=2400
   TORCHINDUCTOR_COMPILE_THREADS=4
