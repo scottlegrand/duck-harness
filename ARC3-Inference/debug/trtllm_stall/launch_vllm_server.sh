@@ -80,10 +80,11 @@ if [ -z "${VLLM_NO_CUDA_COREDUMP:-}" ]; then
     CUDA_ENABLE_COREDUMP_ON_EXCEPTION=1
     CUDA_ENABLE_LIGHTWEIGHT_COREDUMP=1
     CUDA_COREDUMP_FILE="$HOME/trt/evidence/cuda-coredumps/core-%h-%p.nvcudmp"
-    # Freeze on device exception and wait for cuda-gdb instead of dying:
-    # attach with `cuda-gdb -p <EngineCore pid>` then `info cuda kernels`
-    # to read the guilty kernel/PC off the live context.
-    CUDA_DEVICE_WAITS_ON_EXCEPTION=1
+    # NOTE: do NOT also set CUDA_DEVICE_WAITS_ON_EXCEPTION — the driver
+    # treats the two as mutually exclusive and silently disables BOTH
+    # ("CUDA coredump is not supported with CUDA attach on exception"),
+    # which is how the 12:59 misaligned-address crash escaped uncaptured.
+    # Autopsy a dump with: cuda-gdb <python> <core.nvcudmp>
   )
 fi
 ENVV=(env
