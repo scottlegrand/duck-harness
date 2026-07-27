@@ -72,6 +72,10 @@ if [ -z "${VLLM_NO_CUDA_COREDUMP:-}" ]; then
     CUDA_ENABLE_COREDUMP_ON_EXCEPTION=1
     CUDA_ENABLE_LIGHTWEIGHT_COREDUMP=1
     CUDA_COREDUMP_FILE="$HOME/trt/evidence/cuda-coredumps/core-%h-%p.nvcudmp"
+    # Freeze on device exception and wait for cuda-gdb instead of dying:
+    # attach with `cuda-gdb -p <EngineCore pid>` then `info cuda kernels`
+    # to read the guilty kernel/PC off the live context.
+    CUDA_DEVICE_WAITS_ON_EXCEPTION=1
   )
 fi
 ENVV=(env
