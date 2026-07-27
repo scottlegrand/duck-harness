@@ -56,6 +56,13 @@ LAUNCH+=(
 # the isolated suspect. Re-enable with VLLM_ALLOW_CUDAGRAPHS=1 to test.
 if [ -z "${VLLM_FORCE_EAGER:-}" ] && [ -z "${VLLM_ALLOW_CUDAGRAPHS:-}" ]; then
   LAUNCH+=(-cc.cudagraph_mode=none)
+elif [ -n "${VLLM_ALLOW_CUDAGRAPHS:-}" ] && [ -z "${VLLM_FULL_CUDAGRAPHS:-}" ]; then
+  # 16:27:43 host SEGFAULT inside cuGraphLaunch during full-graph replay
+  # (at::cuda::CUDAGraph::replay), engine at ~700 tok/s: FULL decode-step
+  # replay races the async scheduler's per-step metadata rewrites. Piecewise
+  # keeps the launch-amortization win without whole-step replay.
+  # VLLM_FULL_CUDAGRAPHS=1 restores FULL_AND_PIECEWISE for A/B.
+  LAUNCH+=(-cc.cudagraph_mode=PIECEWISE)
 fi
 
 # CUDA_LAUNCH_BLOCKING is retired as the default: triton driver-API launches
