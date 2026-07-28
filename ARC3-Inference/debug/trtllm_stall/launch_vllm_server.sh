@@ -39,6 +39,14 @@ if [ -n "${VLLM_ENABLE_PREFIX_CACHING:-}" ]; then
 else
   LAUNCH+=(--no-enable-prefix-caching)
 fi
+# The 17:00 wedge (live cuda-gdb): cudnn_generated_fort_native_sm120_
+# matMul_pointwise spinning DESPITE TORCH_CUDNN_V8_API_DISABLED=1 — the
+# caller is FlashInfer's fp8 GEMM autotuner (backend "auto" includes cuDNN
+# frontend candidates), not torch. Same engine whose sm80 variant crashed
+# with 'Warp Out of Range Register' at 13:43. Pin quantized-linear GEMMs to
+# vLLM CUTLASS, bypassing FlashInfer dispatch (VLLM_LINEAR_BACKEND to
+# override).
+LAUNCH+=(--kernel-config "{\"linear_backend\": \"${VLLM_LINEAR_BACKEND:-cutlass}\"}")
 LAUNCH+=(
   --enable-auto-tool-choice
   --tool-call-parser qwen3_coder
